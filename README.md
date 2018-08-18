@@ -1,4 +1,4 @@
-# ansible+kubeadm，搭建高可用kubernetes集群
+# centos7+ansible+kubeadm，搭建高可用kubernetes集群
 
 ## 版本
 - ansible: 2.5.1 +
@@ -85,5 +85,5 @@ Host *
     ```
 
 ## 其他
-目前除了搭建集群，还默认安装了heapster+influetdb, dashboard(nodeport:30001), logroate扩展。  
-后续考虑会加入其他常用扩展。  
+目前除了搭建集群，还默认安装了heapster+influetdb, dashboard(nodeport:30001), logroate，后续考虑会加入其他常用扩展。  
+目前只适用于centos7，后续考虑兼容ubuntu.
