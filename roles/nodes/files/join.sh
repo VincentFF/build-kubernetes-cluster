@@ -1,0 +1,1 @@
+  kubeadm join test-for-scripts-etcd-38f51ea446fc6b9d.elb.ap-southeast-1.amazonaws.com:6443 --token d0m0m9.ck2qiet2bjm1k9wu --discovery-token-ca-cert-hash sha256:55f36cdcbdc46d17221c9453ab3c90ef4ee7afc340564002cc031c586d0f737e

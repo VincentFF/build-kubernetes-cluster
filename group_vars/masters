@@ -1,0 +1,5 @@
+---
+load_blance_ip: "test-for-scripts-etcd-38f51ea446fc6b9d.elb.ap-southeast-1.amazonaws.com"
+etcd_blance_ip: "test-for-scripts-etcd-38f51ea446fc6b9d.elb.ap-southeast-1.amazonaws.com"
+load_blance_port: 6443
+etcd_version: 3.2.18

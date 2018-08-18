@@ -1,0 +1,40 @@
+---
+- name: Copy kubeconfig to master01
+  template: src=../templates/kubeadm-config.yaml dest=/root/kubeadm-config.yaml owner=root group=root mode=0644
+
+- name: mkdir for master01
+  file: path=/etc/kubernetes/pki/etcd state=directory
+
+- name: Copy certs to master01
+  copy: src=../files/{{ item }} dest=/etc/kubernetes/pki/{{ item }}
+  with_items:
+    - "etcd/ca.crt"
+    - "apiserver-etcd-client.crt"
+    - "apiserver-etcd-client.key"
+- name: Check the kubelet status
+  command: systemctl status kubelet
+  ignore_errors: true
+  changed_when: false
+  register: kubelet_status
+
+- name: Install kubernets master01 with kubeadm
+  shell: kubeadm init --config /root/kubeadm-config.yaml | grep 'kubeadm join'
+  register: kubeadm_response
+  when: kubelet_status is failed
+
+- name: Restore kubeadm join
+  local_action: shell echo "{{ kubeadm_response.stdout }}" > ../../nodes/files/join.sh
+
+- name: Fetch CA files from master01
+  fetch: src=/etc/kubernetes/pki/{{ item }} dest=../files/{{ item }} flat=yes
+  with_items:
+    - "ca.crt"
+    - "ca.key"
+    - "sa.key"
+    - "sa.pub"
+    - "sa.pub"
+    - "front-proxy-ca.crt"
+    - "front-proxy-ca.key"
+
+- name: Fetch admin.conf from master01
+  fetch: src=/etc/kubernetes/admin.conf dest=../files/admin.conf flat=yes

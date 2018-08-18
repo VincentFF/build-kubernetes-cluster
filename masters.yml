@@ -1,0 +1,3 @@
+---
+- import_playbook: ./roles/masters/tasks/main.yml
+- import_playbook: ./roles/extensions/tasks/calico.yml

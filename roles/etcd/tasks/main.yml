@@ -1,0 +1,16 @@
+- hosts: 127.0.0.1
+  remote_user: root
+  vars:
+    master01_ip: "{{ groups['master01'][0] }}"
+    master02_ip: "{{ groups['master02'][0] }}"
+    master03_ip: "{{ groups['master03'][0] }}"
+  vars_files:
+    - ../../../group_vars/masters
+  connection: local
+  tasks:
+  - include_tasks: certs.yml
+
+- hosts: masters
+  remote_user: root
+  tasks:
+  - include_tasks: install.yml

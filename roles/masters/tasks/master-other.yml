@@ -1,0 +1,28 @@
+- name: mkdir for master other
+  file: path=/etc/kubernetes/pki/etcd state=directory
+
+- name: Copy ca files to master other
+  copy: src=../files/{{ item }} dest=/etc/kubernetes/pki/{{ item }}
+  with_items:
+    - "ca.crt"
+    - "ca.key"
+    - "sa.key"
+    - "sa.pub"
+    - "front-proxy-ca.crt"
+    - "front-proxy-ca.key"
+    - "etcd/ca.crt"
+    - "apiserver-etcd-client.crt"
+    - "apiserver-etcd-client.key"
+
+- name: Copy kubeadm config file to master other
+  template: src=../templates/kubeadm-config.yaml dest=/root/kubeadm-config.yaml owner=root group=root mode=0644
+
+- name: Check the kubelet status master other
+  command: systemctl status kubelet
+  ignore_errors: true
+  changed_when: false
+  register: kubelet_status
+
+- name: Install kubernets master other with kubeadm
+  shell: kubeadm init --config /root/kubeadm-config.yaml
+  when: kubelet_status is failed

@@ -1,0 +1,18 @@
+[master01]
+10.0.1.245 host_name=master01
+[master02]
+10.0.1.192 host_name=master02
+[master03]
+10.0.1.34 host_name=master03
+
+[nodes]
+10.0.1.207 host_name=node01
+
+[masters:children]
+master01
+master02
+master03
+
+[kubernetes:children]
+masters
+nodes

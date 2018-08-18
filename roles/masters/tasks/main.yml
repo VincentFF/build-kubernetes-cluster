@@ -1,0 +1,35 @@
+---
+- hosts: master01
+  remote_user: root
+  vars:
+    master01_ip: "{{ groups['master01'][0] }}"
+    master02_ip: "{{ groups['master02'][0] }}"
+    master03_ip: "{{ groups['master03'][0] }}"
+  tasks:
+  - include_tasks: master01.yml
+
+# - hosts: master02
+#   remote_user: root
+#   vars:
+#     master01_ip: "{{ groups['master01'][0] }}"
+#     master02_ip: "{{ groups['master02'][0] }}"
+#     master03_ip: "{{ groups['master03'][0] }}"
+#   tasks:
+#   - include_tasks: master02.yml
+#
+# - hosts: master03
+#   remote_user: root
+#   vars:
+#     master01_ip: "{{ groups['master01'][0] }}"
+#     master02_ip: "{{ groups['master02'][0] }}"
+#     master03_ip: "{{ groups['master03'][0] }}"
+#   tasks:
+#   - include_tasks: master03.yml
+- hosts: "master02, master03"
+  remote_user: root
+  vars:
+    master01_ip: "{{ groups['master01'][0] }}"
+    master02_ip: "{{ groups['master02'][0] }}"
+    master03_ip: "{{ groups['master03'][0] }}"
+  tasks:
+  - include_tasks: master-other.yml

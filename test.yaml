@@ -1,0 +1,23 @@
+- hosts: 127.0.0.1
+  remote_user: root
+  vars:
+    master02_ip: "{{ groups['master02'][0] }}"
+    master03_ip: "{{ groups['master03'][0] }}"
+  tasks:
+    - name: test 1
+      debug:
+        msg: "test:----{{ master02_ip }}"
+      # with_items:
+      #   - "{{ groups['master01'] }}"
+    # - name: test 2
+    #   debug:
+    #     msg: "test:----{{ hostvars[master02_ip]['host_name'] }}"
+    # - name: test
+    #   command: systemctl status kubelet
+    #   ignore_errors: true
+    #   changed_when: false
+    #   register: result
+    #
+    # - name: test1
+    #   debug:
+    #     msg: "{{ result }}"

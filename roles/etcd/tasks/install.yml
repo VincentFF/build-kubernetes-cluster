@@ -1,0 +1,70 @@
+- name: Install etcd
+  yum: name="etcd-{{ etcd_version }}" state=present
+
+- name: Make dir to restore etcd certs
+  file: path=/etc/ssl/etcd state=directory
+
+- name: Copy file to etcd hosts
+  copy: src="{{ item }}" dest=/etc/ssl/etcd/ owner=etcd group=etcd mode=0600
+  with_fileglob:
+    - ../files/*.pem
+
+- name: Copy etcd01 config to hosts
+  copy: src=../files/etcd_master01.conf dest=/etc/etcd/etcd.conf
+  when: host_name == "master01"
+- name: Copy etcd02 config to hosts
+  copy: src=../files/etcd_master02.conf dest=/etc/etcd/etcd.conf
+  when: host_name == "master02"
+- name: Copy etcd03 config to hosts
+  copy: src=../files/etcd_master03.conf dest=/etc/etcd/etcd.conf
+  when: host_name == "master03"
+
+- name: Copy etcd service config to hosts
+  copy: src=../files/etcd.service dest=/usr/lib/systemd/system/etcd.service
+
+- name: systemd daemon_reload
+  systemd: daemon_reload=yes
+
+
+- name: start etcd01
+  systemd: name=etcd state=started
+  async: 300
+  poll: 0
+  # register: etcd01_status
+  when: host_name == "master01"
+
+- name: wait 3s for etcd01 start
+  wait_for: timeout=1
+
+- name: start etcd2
+  systemd: name=etcd state=started
+  async: 300
+  poll: 0
+  # register: etcd02_status
+  when: host_name == "master02"
+
+- name: start etcd3
+  systemd: name=etcd state=started
+  async: 300
+  poll: 0
+  # register: etcd03_status
+  when: host_name == "master03"
+
+# - name: check etcd01
+#   async_status:
+#     jid: "{{ etcd01_status.ansible_job_id }}"
+#   register: job_result
+#   until: job_result.finished
+#   retries: 10
+# - name: check etcd02
+#   async_status:
+#     jid: "{{ etcd02_status.ansible_job_id }}"
+#   register: job_result
+#   until: job_result.finished
+#   retries: 10
+# - name: check etcd03
+#   async_status:
+#     jid: "{{ etcd03_status.ansible_job_id }}"
+#   register: job_result
+#   until: job_result.finished
+#   retries: 10

@@ -1,0 +1,16 @@
+{
+    "CN": "etcd",
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "SG",
+            "L": "SG",
+            "O": "etcd",
+            "ST": "SG",
+            "OU": "etcd"
+        }
+    ]
+}
