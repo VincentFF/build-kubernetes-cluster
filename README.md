@@ -18,7 +18,7 @@
 - etcd负载均衡器。转发到3个master节点的2379端口。
 - kube-apiserver负载均衡器。转发到3个master节点的6443端口。
 
-### 节点ssh设置（在控制节点执行）
+### 控制节点ssh设置（在控制节点执行）
 - 如果是第一次ssh连接远程机器,默认需要手动输入yes确认公钥。这里关闭`StrictHostKeyChecking`检查，可以在任务执行完成后再打开。  
 - 如果控制节点没有其他节点的ssh权限，但你的主机拥有所有节点的ssh权限。打开`ForwardAgent`开启代理转发即可。  
 完整配置如下`vim /etc/ssh/ssh_config`：  
@@ -36,7 +36,7 @@ Host *
 ```
 
 ## 安装etcd集群及kubernetes集群
-1. 修改./build-kubernetes-cluster/hosts文件。
+1. 修改./build-kubernetes-cluster/hosts文件。  
     ```
     # 下面的host_name不是你目前节点的hostname，而是你规划的hostname，程序会根据你填入的名称对节点进行修改。
     # 只需填入ip和host_name,其他保持默认。
@@ -55,8 +55,8 @@ Host *
     10.0.x.x host_name=node0x
     10.0.x.x host_name=node0x
     ```
-2. 修改参数
-    vim ./build-kubernetes-cluster/group_vars/all
+2. 修改参数  
+    vim ./build-kubernetes-cluster/group_vars/all  
     ```
     # 这里主要是route_ip，如果使用aws内网的ec2实例，默认是不能链接网络的。这里添加一个路由，会自动设置到不能联网的节点上去。
     route_ip: 10.0.1.9
