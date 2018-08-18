@@ -21,7 +21,7 @@
 ### 节点ssh设置（在控制节点执行）
 - 如果是第一次ssh连接远程机器,默认需要手动输入yes确认公钥。这里关闭`StrictHostKeyChecking`检查，可以在任务执行完成后再打开。  
 - 如果控制节点没有其他节点的ssh权限，但你的主机拥有所有节点的ssh权限。打开`ForwardAgent`开启代理转发即可。  
-完整配置如下`vim /etc/ssh/ssh_config`：
+完整配置如下`vim /etc/ssh/ssh_config`：  
 ```
 Host *
     ForwardAgent yes
