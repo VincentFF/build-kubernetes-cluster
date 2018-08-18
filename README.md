@@ -33,7 +33,6 @@ Host *
     SendEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
     SendEnv LC_IDENTIFICATION LC_ALL LANGUAGE
     SendEnv XMODIFIERS
-
 ```
 
 ## 安装etcd集群及kubernetes集群
