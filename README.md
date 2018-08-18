@@ -38,53 +38,52 @@ Host *
 
 ## 安装etcd集群及kubernetes集群
 1. 修改./build-kubernetes-cluster/hosts文件。
-```
-# 下面的host_name不是你目前节点的hostname，而是你规划的hostname，程序会根据你填入的名称对节点进行修改。
-# 只需填入ip和host_name,其他保持默认。
+    ```
+    # 下面的host_name不是你目前节点的hostname，而是你规划的hostname，程序会根据你填入的名称对节点进行修改。
+    # 只需填入ip和host_name,其他保持默认。
 
-# 这里只需要讲三台master节点的ip填入即可，host_name建议保持默认。
-[master01]
-10.0.x.x host_name=master01
-[master02]
-10.0.x.x host_name=master02
-[master03]
-10.0.x.x host_name=master03
+    # 这里只需要讲三台master节点的ip填入即可，host_name建议保持默认。
+    [master01]
+    10.0.x.x host_name=master01
+    [master02]
+    10.0.x.x host_name=master02
+    [master03]
+    10.0.x.x host_name=master03
 
-# 这里需要填入node节点ip和host_name。
-[nodes]
-10.0.x.x host_name=node01
-10.0.x.x host_name=node0x
-10.0.x.x host_name=node0x
-```
+    # 这里需要填入node节点ip和host_name。
+    [nodes]
+    10.0.x.x host_name=node01
+    10.0.x.x host_name=node0x
+    10.0.x.x host_name=node0x
+    ```
 2. 修改参数
-vim ./build-kubernetes-cluster/group_vars/all
-```
-# 这里主要是route_ip，如果使用aws内网的ec2实例，默认是不能链接网络的。这里添加一个路由，会自动设置到不能联网的节点上去。
-route_ip: 10.0.1.9
+    vim ./build-kubernetes-cluster/group_vars/all
+    ```
+    # 这里主要是route_ip，如果使用aws内网的ec2实例，默认是不能链接网络的。这里添加一个路由，会自动设置到不能联网的节点上去。
+    route_ip: 10.0.1.9
 
-# 版本建议保持默认
-kube_version: 1.11.1
-docker_version: 18
-```
-vim ./build-kubernetes-cluster/group_vars/masters  
-```
-# 只需填入load_blance_ip 和 etcd_blance_ip即可。
-# 这里即是你准备的负载均衡的地址。
-load_blance_ip: "10.0.1.1"
-etcd_blance_ip: "10.0.1.1"
+    # 版本建议保持默认
+    kube_version: 1.11.1
+    docker_version: 18
+    ```
+    vim ./build-kubernetes-cluster/group_vars/masters  
+    ```
+    # 只需填入load_blance_ip 和 etcd_blance_ip即可。
+    # 这里即是你准备的负载均衡的地址。
+    load_blance_ip: "10.0.1.1"
+    etcd_blance_ip: "10.0.1.1"
 
-# 下面参数可以保持默认
-load_blance_port: 6443
-etcd_version: 3.2.18
-```
-
+    # 下面参数可以保持默认
+    load_blance_port: 6443
+    etcd_version: 3.2.18
+    ```
 3. 执行启动脚本
-```
-cd ./build-kubernetes-cluster/
-./setup.sh
+    ```
+    cd ./build-kubernetes-cluster/
+    ./setup.sh
 
-# 等待几分钟，整个集群就搭建起来了。
-```
+    # 等待几分钟，整个集群就搭建起来了。
+    ```
 
 ## 其他
 目前除了搭建集群，还默认安装了heapster+influetdb, dashboard(nodeport:30001), logroate扩展。  
