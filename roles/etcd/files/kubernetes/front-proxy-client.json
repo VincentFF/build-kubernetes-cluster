@@ -1,0 +1,17 @@
+{
+    "CN": "kube-apiserver-kubelet-client",
+    "hosts": [],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "SG",
+            "L": "SG",
+            "O": "kubernetes",
+            "ST": "SG",
+            "OU": "kubernetes"
+        }
+    ]
+}

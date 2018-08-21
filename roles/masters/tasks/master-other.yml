@@ -4,15 +4,21 @@
 - name: Copy ca files to master other
   copy: src=../files/{{ item }} dest=/etc/kubernetes/pki/{{ item }}
   with_items:
-    - "ca.crt"
-    - "ca.key"
     - "sa.key"
     - "sa.pub"
-    - "front-proxy-ca.crt"
-    - "front-proxy-ca.key"
     - "etcd/ca.crt"
     - "apiserver-etcd-client.crt"
     - "apiserver-etcd-client.key"
+    - "apiserver.crt"
+    - "apiserver.key"
+    - "apiserver-kubelet-client.crt"
+    - "apiserver-kubelet-client.key"
+    - "ca.crt"
+    - "ca.key"
+    - "front-proxy-ca.crt"
+    - "front-proxy-ca.key"
+    - "front-proxy-client.crt"
+    - "front-proxy-client.key"
 
 - name: Copy kubeadm config file to master other
   template: src=../templates/kubeadm-config.yaml dest=/root/kubeadm-config.yaml owner=root group=root mode=0644

@@ -1,0 +1,32 @@
+{
+    "CN": "kube-apiserver",
+    "hosts": [
+        "127.0.0.1",
+        "{{ hostvars[master01_ip]['host_name'] }}",
+        "{{ hostvars[master02_ip]['host_name'] }}",
+        "{{ hostvars[master03_ip]['host_name'] }}",
+        "{{ master01_ip }}",
+        "{{ master02_ip }}",
+        "{{ master03_ip }}",
+        "{{ load_blance_ip }}",
+        "10.96.0.1",
+        "kubernetes",
+        "kubernetes.default",
+        "kubernetes.default.svc",
+        "kubernetes.default.svc.cluster",
+        "kubernetes.default.svc.cluster.local"
+    ],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "SG",
+            "L": "SG",
+            "O": "kubernetes",
+            "ST": "SG",
+            "OU": "kubernetes"
+        }
+    ]
+}

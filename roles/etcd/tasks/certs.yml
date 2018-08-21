@@ -1,5 +1,5 @@
-- name: generate config files from templates
-  template: src=../templates/{{ item }} dest=../files/{{ item }}
+- name: generate etcd config files from templates
+  template: src=../templates/{{ item }} dest=../files/etcd/{{ item }}
   with_items:
   - "etcd_master01.conf"
   - "etcd_master02.conf"
@@ -7,5 +7,10 @@
   - "peer.json"
   - "server.json"
 
+- name: generate kubernetes config files from templates
+  template: src=../templates/{{ item }} dest=../files/kubernetes/{{ item }}
+  with_items:
+  - "apiserver.json"
+  
 - name: generate etcd certs
   shell: cd ../scripts/ && ./gencerts.sh

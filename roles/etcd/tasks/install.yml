@@ -7,20 +7,20 @@
 - name: Copy file to etcd hosts
   copy: src="{{ item }}" dest=/etc/ssl/etcd/ owner=etcd group=etcd mode=0600
   with_fileglob:
-    - ../files/*.pem
+    - ../files/etcd/*.pem
 
 - name: Copy etcd01 config to hosts
-  copy: src=../files/etcd_master01.conf dest=/etc/etcd/etcd.conf
+  copy: src=../files/etcd/etcd_master01.conf dest=/etc/etcd/etcd.conf
   when: host_name == "master01"
 - name: Copy etcd02 config to hosts
-  copy: src=../files/etcd_master02.conf dest=/etc/etcd/etcd.conf
+  copy: src=../files/etcd/etcd_master02.conf dest=/etc/etcd/etcd.conf
   when: host_name == "master02"
 - name: Copy etcd03 config to hosts
-  copy: src=../files/etcd_master03.conf dest=/etc/etcd/etcd.conf
+  copy: src=../files/etcd/etcd_master03.conf dest=/etc/etcd/etcd.conf
   when: host_name == "master03"
 
 - name: Copy etcd service config to hosts
-  copy: src=../files/etcd.service dest=/usr/lib/systemd/system/etcd.service
+  copy: src=../files/etcd/etcd.service dest=/usr/lib/systemd/system/etcd.service
 
 - name: systemd daemon_reload
   systemd: daemon_reload=yes

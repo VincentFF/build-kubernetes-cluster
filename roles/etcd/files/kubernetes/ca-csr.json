@@ -1,0 +1,14 @@
+{
+    "CN": "kubernetes",
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [{
+        "C": "SG",
+        "ST": "SG",
+        "L": "SG",
+        "O": "kubernetes",
+        "OU": "kubernetes"
+    }]
+}

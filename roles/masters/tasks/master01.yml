@@ -11,6 +11,16 @@
     - "etcd/ca.crt"
     - "apiserver-etcd-client.crt"
     - "apiserver-etcd-client.key"
+    - "apiserver.crt"
+    - "apiserver.key"
+    - "apiserver-kubelet-client.crt"
+    - "apiserver-kubelet-client.key"
+    - "ca.crt"
+    - "ca.key"
+    - "front-proxy-ca.crt"
+    - "front-proxy-ca.key"
+    - "front-proxy-client.crt"
+    - "front-proxy-client.key"
 - name: Check the kubelet status
   command: systemctl status kubelet
   ignore_errors: true
@@ -28,13 +38,12 @@
 - name: Fetch CA files from master01
   fetch: src=/etc/kubernetes/pki/{{ item }} dest=../files/{{ item }} flat=yes
   with_items:
-    - "ca.crt"
-    - "ca.key"
+    # - "ca.crt"
+    # - "ca.key"
     - "sa.key"
     - "sa.pub"
-    - "sa.pub"
-    - "front-proxy-ca.crt"
-    - "front-proxy-ca.key"
+    # - "front-proxy-ca.crt"
+    # - "front-proxy-ca.key"
 
 - name: Fetch admin.conf from master01
   fetch: src=/etc/kubernetes/admin.conf dest=../files/admin.conf flat=yes
