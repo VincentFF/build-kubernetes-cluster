@@ -3,12 +3,23 @@ cwd=$(cd `dirname $0`; pwd)
 #     #statements
 #     mkdir  ~/.kube
 # fi
-# cp ${cwd}/../../masters/files/admin.conf ~/.kube/config
+cp ${cwd}/../../masters/files/admin.conf ~/.kube/config
 export KUBECONFIG=${cwd}/../../masters/files/admin.conf
 
 cd ${cwd}/../files/
 
-kubectl create -f dashboard/.
-kubectl create -f heapster/heapster-rbac.yaml heapster/heapster.yaml heapster/influxdb.yaml
-kubectl create -f logrotate/.
-kubectl create -f sa/.
+kubectl apply -f calico/.
+kubectl apply -f dashboard/.
+kubectl apply -f heapster/heapster-rbac.yaml
+kubectl apply -f heapster/heapster.yaml
+kubectl apply -f heapster/influxdb.yaml
+kubectl apply -f logrotate/.
+kubectl apply -f sa/.
+
+admin_token=$(kubectl describe sa admin| grep Tokens| awk '{print $NF}')
+admin_secret=$(kubectl describe secret ${admin_token}| grep token: |awk '{print $NF}')
+sed "s/token_here_replace/${admin_secret}" ../../../admin-token.conf
+
+viewer_token=$(kubectl describe sa viewer| grep Tokens| awk '{print $NF}')
+viewer_secret=$(kubectl describe secret ${viewer_token}| grep token: |awk '{print $NF}')
+sed "s/token_here_replace/${viewer_secret}" ../../../viewer-token.conf

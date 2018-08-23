@@ -1,3 +1,6 @@
+- name: Remove etcd
+  yum: name=etcd* state=absent
+
 - name: Install etcd
   yum: name="etcd-{{ etcd_version }}" state=present
 

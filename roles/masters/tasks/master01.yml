@@ -38,10 +38,10 @@
 - name: Fetch CA files from master01
   fetch: src=/etc/kubernetes/pki/{{ item }} dest=../files/{{ item }} flat=yes
   with_items:
-    # - "ca.crt"
-    # - "ca.key"
     - "sa.key"
     - "sa.pub"
+    # - "ca.crt"
+    # - "ca.key"
     # - "front-proxy-ca.crt"
     # - "front-proxy-ca.key"
 

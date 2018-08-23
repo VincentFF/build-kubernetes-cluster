@@ -4,19 +4,19 @@
 - name: Copy ca files to master other
   copy: src=../files/{{ item }} dest=/etc/kubernetes/pki/{{ item }}
   with_items:
-    - "sa.key"
-    - "sa.pub"
-    - "etcd/ca.crt"
     - "apiserver-etcd-client.crt"
     - "apiserver-etcd-client.key"
-    - "apiserver.crt"
-    - "apiserver.key"
-    - "apiserver-kubelet-client.crt"
-    - "apiserver-kubelet-client.key"
+    - "etcd/ca.crt"
+    - "sa.key"
+    - "sa.pub"
     - "ca.crt"
     - "ca.key"
     - "front-proxy-ca.crt"
     - "front-proxy-ca.key"
+    - "apiserver.crt"
+    - "apiserver.key"
+    - "apiserver-kubelet-client.crt"
+    - "apiserver-kubelet-client.key"
     - "front-proxy-client.crt"
     - "front-proxy-client.key"
 

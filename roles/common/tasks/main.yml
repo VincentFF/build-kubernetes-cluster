@@ -26,14 +26,18 @@
   sysctl: name=net.ipv4.ip_forward value=1 sysctl_set=yes reload=no
 
 # install docker
-- name: install docker
-  yum: name=docker-ce-{{ docker_version }}* state=present
-- name: start docker
-  systemd: name=docker state=started
+# - name: remove old docker
+#   yum: name=docker* state=absent
+# - name: install docker-ce selinux
+#   yum: name=docker-ce-{{ docker_version }} state=present
+- name: Start docker
+  systemd: name=docker state=started enabled=yes
 
 # install kube packages
 - name: install kubelet
   yum: name=kubelet-{{ kube_version }} state=present
+- name: enabled kubelet
+  systemd: name=kubelet enabled=yes
 - name: install kubeadm
   yum: name=kubeadm-{{ kube_version }} state=present
 - name: install kubectl

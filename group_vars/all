@@ -1,4 +1,4 @@
 ---
 route_ip: 10.0.1.9
-kube_version: 1.11.1
-docker_version: 18
+kube_version: 1.11.2
+docker_version: 18.03.1.ce

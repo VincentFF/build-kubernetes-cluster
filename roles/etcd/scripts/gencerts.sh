@@ -14,7 +14,11 @@ cd $dir
 ./cfssl gencert -initca ${files}/kubernetes/ca-csr.json | ./cfssljson -bare ${files}/kubernetes/ca
 ./cfssl gencert -ca=${files}/kubernetes/ca.pem -ca-key=${files}/kubernetes/ca-key.pem -config=${files}/kubernetes/ca-config.json -profile=kubernetes ${files}/kubernetes/apiserver.json| ./cfssljson -bare ${files}/kubernetes/apiserver
 ./cfssl gencert -ca=${files}/kubernetes/ca.pem -ca-key=${files}/kubernetes/ca-key.pem -config=${files}/kubernetes/ca-config.json -profile=kubernetes ${files}/kubernetes/apiserver-kubelet-client.json| ./cfssljson -bare ${files}/kubernetes/apiserver-kubelet-client
-./cfssl gencert -ca=${files}/kubernetes/ca.pem -ca-key=${files}/kubernetes/ca-key.pem -config=${files}/kubernetes/ca-config.json -profile=kubernetes ${files}/kubernetes/front-proxy-client.json| ./cfssljson -bare ${files}/kubernetes/front-proxy-client
+
+# generate proxy certs
+./cfssl gencert -initca ${files}/kubernetes/front-ca-csr.json | ./cfssljson -bare ${files}/kubernetes/front-proxy-ca
+./cfssl gencert -ca=${files}/kubernetes/front-proxy-ca.pem -ca-key=${files}/kubernetes/front-proxy-ca-key.pem -config=${files}/kubernetes/ca-config.json -profile=kubernetes ${files}/kubernetes/front-proxy-client.json| ./cfssljson -bare ${files}/kubernetes/front-proxy-client
+
 
 
 # copy etcd certs to kubernetes
@@ -25,8 +29,8 @@ cp ${files}/etcd/client-key.pem ${dir}/../../masters/files/apiserver-etcd-client
 # copy kubernetes certs
 cp ${files}/kubernetes/ca.pem ${dir}/../../masters/files/ca.crt
 cp ${files}/kubernetes/ca-key.pem ${dir}/../../masters/files/ca.key
-cp ${files}/kubernetes/ca.pem ${dir}/../../masters/files/front-proxy-ca.crt
-cp ${files}/kubernetes/ca-key.pem ${dir}/../../masters/files/front-proxy-ca.key
+cp ${files}/kubernetes/front-proxy-ca.pem ${dir}/../../masters/files/front-proxy-ca.crt
+cp ${files}/kubernetes/front-proxy-ca-key.pem ${dir}/../../masters/files/front-proxy-ca.key
 cp ${files}/kubernetes/apiserver.pem ${dir}/../../masters/files/apiserver.crt
 cp ${files}/kubernetes/apiserver-key.pem ${dir}/../../masters/files/apiserver.key
 cp ${files}/kubernetes/apiserver-kubelet-client.pem ${dir}/../../masters/files/apiserver-kubelet-client.crt

@@ -1,14 +1,12 @@
 [master01]
-10.0.1.172 host_name=master01
+10.0.1.164 host_name=master01
 [master02]
-10.0.1.83 host_name=master02
+10.0.1.183 host_name=master02
 [master03]
-10.0.1.106 host_name=master03
+10.0.1.200 host_name=master03
 
 [nodes]
-10.0.1.74 host_name=node01
-10.0.1.237 host_name=node02
-10.0.1.163 host_name=node03
+10.0.1.188 host_name=node01
 
 [masters:children]
 master01

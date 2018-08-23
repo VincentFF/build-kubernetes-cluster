@@ -1,6 +1,5 @@
 {
-    "CN": "front-proxy-client",
-    "hosts": [],
+    "CN": "kubernetes-front-proxy",
     "key": {
         "algo": "rsa",
         "size": 2048

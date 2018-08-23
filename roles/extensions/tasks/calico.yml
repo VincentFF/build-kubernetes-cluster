@@ -7,9 +7,9 @@
     wait_for:
       host: "{{ load_blance_ip }}"
       port: 6443
-      delay: 5
+      delay: 10
       state: started
-      timeout: 120
+      timeout: 60
 
   - name: install calico
     shell:  cd ./../scripts && sh calico.sh

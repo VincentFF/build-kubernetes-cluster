@@ -1,5 +1,5 @@
 {
-    "CN": "front-proxy-client",
+    "CN": "kube-apiserver-kubelet-client",
     "hosts": [],
     "key": {
         "algo": "rsa",
@@ -10,8 +10,7 @@
             "C": "SG",
             "L": "SG",
             "O": "system:masters",
-            "ST": "SG",
-            "OU": "system:masters"
+            "ST": "SG"
         }
     ]
 }
