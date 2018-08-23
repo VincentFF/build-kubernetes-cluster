@@ -1,9 +1,13 @@
 # centos7+ansible+kubeadm，搭建高可用kubernetes集群
 
+
+**注:**  
+在AWS上生产ec2实例时选用`kubernetes-1.11.2`镜像，里面安装好了kubernetes和docker组件。  
+为了节省时间，所以默认注释掉了`roles/common/tasks/main.yml`中安装docker和kubernetes部分。如果机器上没有预装kubernetes和docker组件，则将注释去掉即可。  
 ## 版本
 - ansible: 2.5.1 +
-- kubeadm: 1.11.1
-- docker: docker-ce-18 +
+- kubeadm: 1.11.2
+- docker: docker-ce-18.03.1.ce +
 
 ## 机器（至少5台）
 - 1台控制节点，用来控制整个集群和执行安装命令。(只需要有其他所有节点的ssh权限的任意机器，可以是你本机)
@@ -61,9 +65,9 @@ Host *
     # 这里主要是route_ip，如果使用aws内网的ec2实例，默认是不能链接网络的。这里添加一个路由，会自动设置到不能联网的节点上去。
     route_ip: 10.0.1.9
 
-    # 版本建议保持默认
-    kube_version: 1.11.1
-    docker_version: 18
+    # 建议保持默认
+    kube_version: 1.11.2
+    docker_version: 18.03.1.ce
     ```
     vim ./build-kubernetes-cluster/group_vars/masters  
     ```
@@ -72,7 +76,7 @@ Host *
     load_blance_ip: "10.0.1.1"
     etcd_blance_ip: "10.0.1.1"
 
-    # 下面参数可以保持默认
+    # 建议保持默认
     load_blance_port: 6443
     etcd_version: 3.2.18
     ```

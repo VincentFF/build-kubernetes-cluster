@@ -34,14 +34,14 @@
   systemd: name=docker state=started enabled=yes
 
 # install kube packages
-- name: install kubelet
-  yum: name=kubelet-{{ kube_version }} state=present
+# - name: install kubelet
+#   yum: name=kubelet-{{ kube_version }} state=present
+# - name: install kubeadm
+#   yum: name=kubeadm-{{ kube_version }} state=present
+# - name: install kubectl
+#   yum: name=kubectl-{{ kube_version }} state=present
 - name: enabled kubelet
   systemd: name=kubelet enabled=yes
-- name: install kubeadm
-  yum: name=kubeadm-{{ kube_version }} state=present
-- name: install kubectl
-  yum: name=kubectl-{{ kube_version }} state=present
 
 # Edit kubelet start args
 - name: Edit kubelet file, open readonly 10255 port
