@@ -3,6 +3,7 @@
 dir=$(cd `dirname $0` && pwd)
 files="${dir}/../files"
 cd $dir
+chmod +x cfssl cfssljson
 
 # generate etcd certs
 ./cfssl gencert -initca ${files}/etcd/ca-csr.json | ./cfssljson -bare ${files}/etcd/ca
@@ -20,6 +21,9 @@ cd $dir
 ./cfssl gencert -ca=${files}/kubernetes/front-proxy-ca.pem -ca-key=${files}/kubernetes/front-proxy-ca-key.pem -config=${files}/kubernetes/ca-config.json -profile=kubernetes ${files}/kubernetes/front-proxy-client.json| ./cfssljson -bare ${files}/kubernetes/front-proxy-client
 
 
+
+# copy etcd certs to etcd
+cp ${files}/etcd/*.pem ${dir}/../../etcd/files/
 
 # copy etcd certs to kubernetes
 cp ${files}/etcd/ca.pem ${dir}/../../masters/files/etcd/ca.crt

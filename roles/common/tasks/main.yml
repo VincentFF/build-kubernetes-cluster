@@ -1,51 +1,12 @@
 ---
-- name: Create the repository for docker
-  copy: src=docker-ce.repo dest=/etc/yum.repos.d/docker-ce.repo
+- name: Config machines
+  include_tasks: usual.yml
+  tags: config
 
-- name: Create the repository for kubernetes
-  copy: src=kubernetes.repo dest=/etc/yum.repos.d/kubernetes.repo
+- name: Install docker
+  include_tasks: docker.yml
+  tags: docker
 
-- name: Change the hostname
-  hostname: name={{ host_name }}
-
-- name: Test network
-  shell: ping -w 1 www.google.com
-  register: host_network
-  ignore_errors: True
-
-- name: Add route to host
-  shell: ip route delete default && ip route add default via {{ route_ip }}
-  when: host_network is failed
-
-# Set the sysctl value
-- name: Set net.bridge.bridge-nf-call-ip6tables
-  sysctl: name=net.bridge.bridge-nf-call-ip6tables value=1 state=present reload=no
-- name: Set net.bridge.bridge-nf-call-iptables
-  sysctl: name=net.bridge.bridge-nf-call-iptables value=1 state=present reload=no
-- name: Set net.ipv4.ip_forward
-  sysctl: name=net.ipv4.ip_forward value=1 sysctl_set=yes reload=no
-
-# install docker
-# - name: remove old docker
-#   yum: name=docker* state=absent
-# - name: install docker-ce selinux
-#   yum: name=docker-ce-{{ docker_version }} state=present
-- name: Start docker
-  systemd: name=docker state=started enabled=yes
-
-# install kube packages
-# - name: install kubelet
-#   yum: name=kubelet-{{ kube_version }} state=present
-# - name: install kubeadm
-#   yum: name=kubeadm-{{ kube_version }} state=present
-# - name: install kubectl
-#   yum: name=kubectl-{{ kube_version }} state=present
-- name: enabled kubelet
-  systemd: name=kubelet enabled=yes
-
-# Edit kubelet start args
-- name: Edit kubelet file, open readonly 10255 port
-  lineinfile:
-    path: /etc/sysconfig/kubelet
-    regexp: '^KUBELET_EXTRA_ARGS=.*'
-    line: 'KUBELET_EXTRA_ARGS="--read-only-port 10255"'
+- name: Install kubernetes
+  include_tasks: kube.yml
+  tags: kubernetes

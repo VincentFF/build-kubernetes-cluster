@@ -1,0 +1,25 @@
+---
+- name: Change the hostname
+  hostname: name={{ host_name }}
+
+- name: Test network
+  shell: ping -w 1 www.google.com
+  register: host_network
+  ignore_errors: True
+
+- name: Add route to host
+  shell: "ip route delete default && ip route add default via {{ route_ip }}"
+  when: host_network is failed
+
+# - name: Add GATEWAY to network files
+#   shell: echo "GATEWAY={{ route_ip }}" >> /etc/sysconfig/network-scripts/ifcfg-eth0
+#   when: host_network is failed
+
+# Set the sysctl value
+
+- name: Copy k8s net file
+  copy: src=k8s.conf dest=/etc/sysctl.d/k8s.conf
+- name: Set k8s net config
+  command: sysctl --system
+- name: Set net.ipv4.ip_forward
+  sysctl: name=net.ipv4.ip_forward value=1 sysctl_set=yes reload=yes

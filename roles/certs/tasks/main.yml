@@ -1,0 +1,13 @@
+- name: generate etcd config files from templates
+  template: src={{ item }} dest={{ playbook_dir }}/roles/certs/files/etcd/{{ item }}
+  with_items:
+  - "peer.json"
+  - "server.json"
+
+- name: generate kubernetes config files from templates
+  template: src={{ item }} dest={{ playbook_dir }}/roles/certs/files/kubernetes/{{ item }}
+  with_items:
+  - "apiserver.json"
+
+- name: generate etcd certs
+  shell: cd {{ playbook_dir }}/roles/certs/scripts/ && sh gencerts.sh

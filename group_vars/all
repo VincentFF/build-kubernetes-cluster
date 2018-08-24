@@ -1,4 +1,16 @@
 ---
+# 内网机器的路由地址。对于没有网络的内网机器，由于安装时需要联网，你可能会需要添加一个路由。
 route_ip: 10.0.1.9
+
+# kubeapi和etcd负载均衡器的ip。
+load_blance_ip: "test-for-scripts-etcd-38f51ea446fc6b9d.elb.ap-southeast-1.amazonaws.com"
+etcd_blance_ip: "test-for-scripts-etcd-38f51ea446fc6b9d.elb.ap-southeast-1.amazonaws.com"
+
+# etcd负载均衡器端口为2379,目前不支持修改。
+# kube-api负载均衡器的端口。
+load_blance_port: 6443
+
+# 版本号。不建议修改。
+etcd_version: 3.2.18
 kube_version: 1.11.2
 docker_version: 18.03.1.ce

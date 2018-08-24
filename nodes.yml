@@ -1,4 +1,0 @@
-- hosts: nodes
-  remote_user: root
-  tasks:
-  - include_role: name=nodes

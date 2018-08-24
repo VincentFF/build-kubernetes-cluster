@@ -1,8 +1,19 @@
+- name: Check the kubelet status master other
+  command: systemctl status kubelet
+  ignore_errors: true
+  changed_when: false
+  register: kubelet_status
+
+- name: If kubelet is running, terminate tasks
+  fail:
+    msg: Kubelet if running, terminate tasks
+  when: kubelet_status is success
+
 - name: mkdir for master other
   file: path=/etc/kubernetes/pki/etcd state=directory
 
 - name: Copy ca files to master other
-  copy: src=../files/{{ item }} dest=/etc/kubernetes/pki/{{ item }}
+  copy: src="{{ item }}" dest="/etc/kubernetes/pki/{{ item }}"
   with_items:
     - "apiserver-etcd-client.crt"
     - "apiserver-etcd-client.key"
@@ -21,14 +32,13 @@
     - "front-proxy-client.key"
 
 - name: Copy kubeadm config file to master other
-  template: src=../templates/kubeadm-config.yaml dest=/root/kubeadm-config.yaml owner=root group=root mode=0644
-
-- name: Check the kubelet status master other
-  command: systemctl status kubelet
-  ignore_errors: true
-  changed_when: false
-  register: kubelet_status
+  template: src=kubeadm-config.yaml dest=/root/kubeadm-config.yaml owner=root group=root mode=0644
 
 - name: Install kubernets master other with kubeadm
   shell: kubeadm init --config /root/kubeadm-config.yaml
-  when: kubelet_status is failed
+  register: kubeadm_response
+
+- name: Check if kubeadm execute right
+  fail:
+    msg: kubeadm execute failed
+  when: kubeadm_response is failed

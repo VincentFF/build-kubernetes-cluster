@@ -1,12 +1,17 @@
-- hosts: 127.0.0.1
+- hosts: masters
   remote_user: root
+  gather_facts: no
   vars:
     master02_ip: "{{ groups['master02'][0] }}"
     master03_ip: "{{ groups['master03'][0] }}"
   tasks:
+    # - shell: rpm -q docker-ce
+    #   register: docker_info
+    #   ignore_errors: true
     - name: test 1
       debug:
-        msg: "test:----{{ master02_ip }}"
+        msg: "{{ role_dir }}"
+      # when: (docker_info is failed) or (docker_version not in docker_info['stdout'])
       # with_items:
       #   - "{{ groups['master01'] }}"
     # - name: test 2

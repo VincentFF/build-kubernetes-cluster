@@ -1,16 +1,61 @@
-- hosts: 127.0.0.1
-  remote_user: root
-  vars:
-    master01_ip: "{{ groups['master01'][0] }}"
-    master02_ip: "{{ groups['master02'][0] }}"
-    master03_ip: "{{ groups['master03'][0] }}"
-  vars_files:
-    - ../../../group_vars/masters
-  connection: local
-  tasks:
-  - include_tasks: certs.yml
+- name: Check etcd status
+  command: systemctl status etcd
+  register: etcd_response
+  ignore_errors: true
 
-- hosts: masters
-  remote_user: root
-  tasks:
-  - include_tasks: install.yml
+- name: terminate tasks if etcd is running
+  fail:
+    msg: etcd is running, terminated tasks.
+  when: etcd_response is success
+
+# - name: Remove old etcd
+#   yum: name=etcd* state=absent
+
+- name: Install etcd
+  yum: name="etcd-{{ etcd_version }}" state=present
+
+- name: Make dir to restore etcd certs
+  file: path=/etc/ssl/etcd state=directory
+
+- name: Copy file to etcd hosts
+  copy: src="{{ item }}" dest=/etc/ssl/etcd/ owner=etcd group=etcd mode=0600
+  with_fileglob:
+    - ../files/*.pem
+
+- name: Copy etcd01 config to hosts
+  template: src=etcd_master01.conf dest=/etc/etcd/etcd.conf
+  when: host_name == "master01"
+- name: Copy etcd02 config to hosts
+  template: src=etcd_master02.conf dest=/etc/etcd/etcd.conf
+  when: host_name == "master02"
+- name: Copy etcd03 config to hosts
+  template: src=etcd_master03.conf dest=/etc/etcd/etcd.conf
+  when: host_name == "master03"
+
+- name: Copy etcd service config to hosts
+  copy: src=etcd.service dest=/usr/lib/systemd/system/etcd.service
+
+- name: systemd daemon_reload
+  systemd: daemon_reload=yes
+
+
+- name: start etcd01
+  systemd: name=etcd state=started enabled=yes
+  async: 300
+  poll: 0
+  when: host_name == "master01"
+
+- name: wait 3s for etcd01 start
+  wait_for: timeout=1
+
+- name: start etcd2
+  systemd: name=etcd state=started enabled=yes
+  async: 300
+  poll: 0
+  when: host_name == "master02"
+
+- name: start etcd3
+  systemd: name=etcd state=started enabled=yes
+  async: 300
+  poll: 0
+  when: host_name == "master03"

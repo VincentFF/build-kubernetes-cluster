@@ -1,5 +1,5 @@
 - name: copy file to
   copy: src=join.sh dest=/root/join.sh
 
-- name: execute join command
+- name: execute join command, add nodes
   shell: sh  /root/join.sh

@@ -1,7 +1,40 @@
 ---
-- import_playbook: contral.yml
-- import_playbook: common.yml
-- import_playbook: etcd.yml
-- import_playbook: masters.yml
-- import_playbook: nodes.yml
-- import_playbook: extend.yml
+- hosts: 127.0.0.1
+  remote_user: root
+  gather_facts: no
+  connection: local
+  vars:
+    master01_ip: "{{ groups['master01'][0] }}"
+    master02_ip: "{{ groups['master02'][0] }}"
+    master03_ip: "{{ groups['master03'][0] }}"
+  pre_tasks:
+    - name: Copy kubernetes yum.repo for contral panle
+      copy: src=./roles/common/files/kubernetes.repo dest=/etc/yum.repos.d/kubernetes.repo
+    - name: Install kubectl for contral panle
+      yum: name="kubectl-{{ kube_version }}" state=present
+  roles:
+    - certs
+- hosts: all
+  remote_user: root
+  roles:
+    - common
+- hosts: masters
+  remote_user: root
+  vars:
+    master01_ip: "{{ groups['master01'][0] }}"
+    master02_ip: "{{ groups['master02'][0] }}"
+    master03_ip: "{{ groups['master03'][0] }}"
+  roles:
+    - etcd
+    - masters
+- hosts: nodes
+  remote_user: root
+  roles:
+    - nodes
+
+- hosts: 127.0.0.1
+  remote_user: root
+  gather_facts: no
+  connection: local
+  roles:
+    - extensions

@@ -1,0 +1,46 @@
+- name: Create the repository for kubernetes
+  copy: src=kubernetes.repo dest=/etc/yum.repos.d/kubernetes.repo
+
+# install kube packages
+- name: Check if kubelet installed and version right
+  shell: rpm -q kubelet
+  register: kubelet_response
+  ignore_errors: true
+- name: Remove old kubelet
+  yum: name=kubelet state=absent
+  when: (kubelet_response is failed) or (kube_version not in kubelet_response['stdout'])
+- name: install kubelet
+  yum: name="kubelet-{{ kube_version }}" state=present
+  when: (kubelet_response is failed) or (kube_version not in kubelet_response['stdout'])
+- name: enabled kubelet
+  systemd: name=kubelet enabled=yes
+
+- name: Check if kubeadm installed and version right
+  shell: rpm -q kubeadm
+  register: kubeadm_response
+  ignore_errors: true
+- name: Remove old kubeadm
+  yum: name=kubeadm state=absent
+  when: (kubeadm_response is failed) or (kube_version not in kubeadm_response['stdout'])
+- name: install kubeadm
+  yum: name="kubeadm-{{ kube_version }}" state=present
+  when: (kubeadm_response is failed) or (kube_version not in kubeadm_response['stdout'])
+
+# - name: Check if kubectl installed and version right
+#   shell: rpm -q kubectl
+#   register: kubectl_response
+#    ignore_errors: true
+# - name: Remove old kubectl
+#   yum: name=kubectl state=absent
+#   when: (kubectl_response is failed) or (kube_version not in kubectl_response['stdout'])
+# - name: install kubectl
+#   yum: name=kubectl-{{ kube_version }} state=present
+#   when: (kubectl_response is failed) or (kube_version not in kubectl_response['stdout'])
+
+
+# Edit kubelet start args
+- name: Edit kubelet file, open readonly 10255 port, open rotate-certificates
+  lineinfile:
+    path: /etc/sysconfig/kubelet
+    regexp: '^KUBELET_EXTRA_ARGS=.*'
+    line: 'KUBELET_EXTRA_ARGS="--read-only-port 10255 --feature-gates RotateKubeletClientCertificate=true --rotate-certificates"'

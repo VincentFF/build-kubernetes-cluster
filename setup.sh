@@ -5,6 +5,6 @@ cd $cwd || exit
 ansible=$(which ansible-playbook)
 if [[ "no$ansible" == "no" ]]; then
     #statements
-    yum install ansible -y
+    yum install epel-release ansible -y
 fi
 ansible-playbook -i hosts site.yml

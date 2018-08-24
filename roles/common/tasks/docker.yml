@@ -1,0 +1,23 @@
+---
+- name: Check if docker installed and version right
+  shell: rpm -q docker-ce
+  register: docker_response
+  ignore_errors: true
+
+- name: Create the repository for docker
+  copy: src=docker-ce.repo dest=/etc/yum.repos.d/docker-ce.repo
+
+- name: remove old docker
+  yum: name=docker* state=absent
+  when: (docker_response is failed) or (docker_version not in docker_response['stdout'])
+
+- name: Clean docker old datas
+  shell: rm -rf /var/lib/docker/*
+  when: (docker_response is failed) or (docker_version not in docker_response['stdout'])
+
+- name: install docker-ce
+  yum: name="docker-ce-{{ docker_version }}" state=present
+  when: (docker_response is failed) or (docker_version not in docker_response['stdout'])
+
+- name: Start docker
+  systemd: name=docker state=started enabled=yes
