@@ -7,17 +7,19 @@ apiServerCertSANs:
 - "{{ master02_ip }}"
 - "{{ master03_ip }}"
 api:
-    controlPlaneEndpoint: "{{ load_blance_ip }}:{{ load_blance_port }}"
+  controlPlaneEndpoint: "{{ load_blance_ip }}:{{ load_blance_port }}"
 etcd:
   external:
-      endpoints:
-      - "https://{{ etcd_blance_ip }}:2379"
-      - "https://{{ master01_ip }}:2379"
-      - "https://{{ master02_ip }}:2379"
-      - "https://{{ master03_ip }}:2379"
-      caFile: /etc/kubernetes/pki/etcd/ca.crt
-      certFile: /etc/kubernetes/pki/apiserver-etcd-client.crt
-      keyFile: /etc/kubernetes/pki/apiserver-etcd-client.key
+    endpoints:
+    - "https://{{ master01_ip }}:2379"
+    - "https://{{ master02_ip }}:2379"
+    - "https://{{ master03_ip }}:2379"
+    caFile: /etc/kubernetes/pki/etcd/ca.crt
+    certFile: /etc/kubernetes/pki/apiserver-etcd-client.crt
+    keyFile: /etc/kubernetes/pki/apiserver-etcd-client.key
 networking:
-    # This CIDR is a Calico default. Substitute or remove for your CNI provider.
-    podSubnet: "192.168.0.0/16"
+  # This CIDR is a Calico default. Substitute or remove for your CNI provider.
+  podSubnet: "10.244.0.0/16"
+kubeProxy:
+  config:
+    mode: "ipvs"

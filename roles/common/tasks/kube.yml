@@ -4,6 +4,8 @@
 # install kube packages
 - name: Check if kubelet installed and version right
   shell: rpm -q kubelet
+  args:
+    warn: false
   register: kubelet_response
   ignore_errors: true
 - name: Remove old kubelet

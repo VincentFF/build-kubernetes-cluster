@@ -11,6 +11,9 @@
 # - name: Remove old etcd
 #   yum: name=etcd* state=absent
 
+# - name: Remove old etcd datas
+#   command: rm -rf /var/lib/etcd/default.etcd/*
+
 - name: Install etcd
   yum: name="etcd-{{ etcd_version }}" state=present
 
@@ -18,7 +21,7 @@
   file: path=/etc/ssl/etcd state=directory
 
 - name: Copy file to etcd hosts
-  copy: src="{{ item }}" dest=/etc/ssl/etcd/ owner=etcd group=etcd mode=0600
+  copy: src="{{ item }}" dest=/etc/ssl/etcd/ owner=root group=root mode=0600
   with_fileglob:
     - ../files/*.pem
 

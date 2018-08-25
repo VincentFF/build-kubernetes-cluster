@@ -3,6 +3,10 @@
   include_tasks: usual.yml
   tags: config
 
+- name: Add ipvs modes
+  include_tasks: ipvs.yml
+  tags: ipvs
+
 - name: Install docker
   include_tasks: docker.yml
   tags: docker

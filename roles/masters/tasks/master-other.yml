@@ -38,7 +38,7 @@
   shell: kubeadm init --config /root/kubeadm-config.yaml
   register: kubeadm_response
 
-- name: Check if kubeadm execute right
+- name: terminate tasks if kubeadm excute failed
   fail:
     msg: kubeadm execute failed
   when: kubeadm_response is failed

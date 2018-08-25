@@ -7,8 +7,7 @@
         "{{ hostvars[master03_ip]['host_name'] }}",
         "{{ master01_ip }}",
         "{{ master02_ip }}",
-        "{{ master03_ip }}",
-        "{{ etcd_blance_ip }}"
+        "{{ master03_ip }}"
     ],
     "key": {
         "algo": "rsa",

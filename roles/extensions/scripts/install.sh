@@ -6,9 +6,9 @@ fi
 cp ${cwd}/../../masters/files/admin.conf ~/.kube/config
 export KUBECONFIG=${cwd}/../../masters/files/admin.conf
 
-cd ${cwd}/../files/
+cd ${cwd}/../files/ || exit 1
 
-kubectl apply -f calico/.
+kubectl apply -f flannel/.
 kubectl apply -f dashboard/.
 kubectl apply -f heapster/heapster-rbac.yaml
 kubectl apply -f heapster/heapster.yaml

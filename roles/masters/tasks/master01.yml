@@ -39,7 +39,7 @@
   shell: kubeadm init --config /root/kubeadm-config.yaml | grep 'kubeadm join'
   register: kubeadm_response
 
-- name: Check kubeadm excute right
+- name: terminate tasks if kubeadm excute failed
   fail:
     msg: kubeadm execute failed
   when: kubeadm_response is failed

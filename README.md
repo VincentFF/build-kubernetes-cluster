@@ -1,37 +1,40 @@
 # centos7+ansible+kubeadm，搭建高可用kubernetes集群
 
 
-**注:**  
-在AWS上生产ec2实例时选用`kubernetes-1.11.2`镜像，里面安装好了kubernetes和docker组件。  
-为了节省时间，所以默认注释掉了`roles/common/tasks/main.yml`中安装docker和kubernetes部分。如果机器上没有预装kubernetes和docker组件，则将注释去掉即可。  
+**备注:**  
+在AWS上生成ec2实例时建议选用`kubernetes-1.11.2`镜像，里面安装好了kubernetes和docker组件,可以节省安装时间。  
+程序关闭了firewalld和selinux。  
+网络插件使用flannel, kube-proxy使用ipvs模式。  
+安装了dashboard, heapster, logrotete插件。  
+生成了两个default/sa用户，一个admin,有管理权限。另一个viewer,有查看权限。基于这两个用户的dashboard登录文件在build-kubernetes-cluster下生成   
+
 ## 版本
 - ansible: 2.5.1 +
 - kubeadm: 1.11.2
 - docker: docker-ce-18.03.1.ce +
 
-## 机器（至少5台）
-- 1台控制节点，用来控制整个集群和执行安装命令。(只需要有其他所有节点的ssh权限的任意机器，可以是你本机)
+## 机器（至少4台）
+- 1台控制节点，即运行安装程序所在的节点。(任意拥有所有节点ssh权限的机器，都可以作为控制节点，建议专门选取一台机器作为控制节点。你也可以使用一台master或node节点作为控制节点，需要保证它有自己的ssh权限。)  
 - 3台master节点。(用来安装etcd和master)
 - 其他为node节点。
 
 ## 准备工作
 ### 两个负载均衡器
 所谓kubernetes集群的高可用，实际上就是etcd集群的高可用和kube-apiserver的高可用。  
-需要提前创建好两个负载均衡器，可以用lvs+haproxy自己搭建，或者亚马逊的负载均衡器都可以。  
+需要提前创建好kube-api的负载均衡器，可以用lvs+haproxy自己搭建，或者亚马逊的负载均衡器都可以。  
 
-- etcd负载均衡器。转发到3个master节点的2379端口。
-- kube-apiserver负载均衡器。转发到3个master节点的6443端口。
+- kube-apiserver负载均衡器。转发到3个master节点的6443端口。如：10.1.11.11:6443 ---> mastersip:6443
 
 ### 控制节点ssh设置（在控制节点执行）
-- 如果是第一次ssh连接远程机器,默认需要手动输入yes确认公钥。这里关闭`StrictHostKeyChecking`检查，可以在任务执行完成后再打开。  
-- 如果控制节点没有其他节点的ssh权限，但你的主机拥有所有节点的ssh权限。打开`ForwardAgent`开启代理转发即可。  
+- 如果是第一次ssh连接远程机器,默认需要手动输入yes确认公钥。这里关闭`StrictHostKeyChecking`检查以跳开这一步，可以在任务执行完成后再打开。  
+- 如果控制节点没有其他节点的ssh权限，但你的主机拥有所有节点的ssh权限。打开`ForwardAgent`开启代理转发即可拥有所有节点ssh权限。  
 完整配置如下`vim /etc/ssh/ssh_config`：  
 ```
 Host *
+    StrictHostKeyChecking no
     ForwardAgent yes
     ForwardX11 yes
     GSSAPIAuthentication yes
-    StrictHostKeyChecking no
     ForwardX11Trusted yes
     SendEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
     SendEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
@@ -62,7 +65,8 @@ Host *
 2. 修改参数  
     vim ./build-kubernetes-cluster/group_vars/all  
     ```
-    # 这里主要是route_ip，如果使用aws内网的ec2实例，默认是不能链接网络的。这里添加一个路由，会自动设置到不能联网的节点上去。
+    # 在内网机器不能联网的情况下，需要设置这个路由ip。
+    # 这个路由会自动设置到不能联网的节点上去，对于能够联网的节点，则会跳过这一步。
     route_ip: 10.0.1.9
 
     # 建议保持默认
@@ -71,12 +75,10 @@ Host *
     ```
     vim ./build-kubernetes-cluster/group_vars/masters  
     ```
-    # 只需填入load_blance_ip 和 etcd_blance_ip即可。
-    # 这里即是你准备的负载均衡的地址。
+    # 只需填入load_blance_ip，即上面你自己创建的负载均衡器ip。
     load_blance_ip: "10.0.1.1"
-    etcd_blance_ip: "10.0.1.1"
 
-    # 建议保持默认
+    # 建议保持默认。load_blance_port即你负载均衡器的port,如果设置的不是6443,在这里更改即可。
     load_blance_port: 6443
     etcd_version: 3.2.18
     ```

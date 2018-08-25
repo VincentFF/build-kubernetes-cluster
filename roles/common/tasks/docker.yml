@@ -1,6 +1,8 @@
 ---
 - name: Check if docker installed and version right
   shell: rpm -q docker-ce
+  args:
+    warn: false
   register: docker_response
   ignore_errors: true
 
@@ -13,6 +15,8 @@
 
 - name: Clean docker old datas
   shell: rm -rf /var/lib/docker/*
+  args:
+    warn: false
   when: (docker_response is failed) or (docker_version not in docker_response['stdout'])
 
 - name: install docker-ce
