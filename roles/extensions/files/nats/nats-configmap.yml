@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nats-config
+  namespace: default
+data:
+  nats.conf: |
+    listen: 0.0.0.0:4222
+    http: 0.0.0.0:8222
+    # Cluster definition
+    cluster {
+        listen: 0.0.0.0:6222
+        routes = [
+            nats://nats:6222
+        ]
+    }
+    debug:   false
+    trace:   true
+    logtime: true
+    max_connections: 1000
+    max_control_line: 512
+    max_payload: 65536
+    write_deadline: "2s"
