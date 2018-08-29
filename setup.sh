@@ -17,6 +17,12 @@ if [ ! -f ~/.ssh/config ]; then
     #statements
     touch ~/.ssh/config
 fi
+
+hosts=$(egrep "^Host[[:space:]]+\*" ~/.ssh/config)
+forward=$(egrep "^[[:space:]]+ForwardAgent[[:space:]]+yes" ~/.ssh/config)
+checking=$(egrep "^[[:space:]]+StrictHostKeyChecking[[:space:]]+no" ~/.ssh/config)
+
+if [ "no$hosts" = "no" ] && [ "no$forward" = "no" ] && [ "no$checking" = "no" ]; then
 cat << EOF >> ~/.ssh/config
 Host *
     ForwardAgent yes
@@ -25,5 +31,7 @@ Host *
     StrictHostKeyChecking no
     UserKnownHostsFile /dev/null
 EOF
+fi
+
 
 ansible-playbook -i hosts site.yml

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-dir=$(cd "`dirname $0`" && pwd)
+dir=$(cd "`dirname $0`" || exit 1 && pwd)
 files="${dir}/../files"
 cd $dir || exit 1
 chmod +x cfssl cfssljson

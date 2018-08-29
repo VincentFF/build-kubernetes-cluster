@@ -19,8 +19,8 @@ kubectl apply -f sa/.
 
 admin_token=$(kubectl describe sa admin| grep Tokens| awk '{print $NF}')
 admin_secret=$(kubectl describe secret ${admin_token}| grep token: |awk '{print $NF}')
-sed -i "s/token_here_replace/${admin_secret}/g" ../../../admin-token.conf
+sed -i "s/token:.*$/token: ${admin_secret}/g" ../../../admin-token.conf
 
 viewer_token=$(kubectl describe sa viewer| grep Tokens| awk '{print $NF}')
 viewer_secret=$(kubectl describe secret ${viewer_token}| grep token: |awk '{print $NF}')
-sed -i "s/token_here_replace/${viewer_secret}/g" ../../../viewer-token.conf
+sed -i "s/token:.*$/token: ${viewer_secret}/g" ../../../viewer-token.conf

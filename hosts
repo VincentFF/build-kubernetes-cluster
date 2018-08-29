@@ -1,13 +1,15 @@
+10.0.1.246
+10.0.1.107
+10.0.1.76
 [master01]
-10.0.1.250 host_name=master01 major=true
+10.0.1.72 host_name=master01 major=true
 [master02]
-10.0.1.254 host_name=master02 major=false
+10.0.1.73 host_name=master02 major=false
 [master03]
-10.0.1.113 host_name=master03 major=false
+10.0.1.169 host_name=master03 major=false
 
 [nodes]
-10.0.1.175 host_name=node01
-10.0.1.203 host_name=node02
+10.0.1.79 host_name=node01
 
 [masters:children]
 master01

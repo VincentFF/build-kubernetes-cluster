@@ -46,3 +46,4 @@
     path: /etc/sysconfig/kubelet
     regexp: '^KUBELET_EXTRA_ARGS=.*'
     line: 'KUBELET_EXTRA_ARGS="--read-only-port 10255 --feature-gates RotateKubeletClientCertificate=true --rotate-certificates"'
+  ignore_errors: true

@@ -3,7 +3,7 @@
 route_ip: 10.0.1.9
 
 # kubeapi负载均衡器的ip。
-load_blance_ip: "test-for-scripts-etcd-38f51ea446fc6b9d.elb.ap-southeast-1.amazonaws.com"
+load_blance_ip: "10.0.1.250"
 
 # etcd负载均衡器端口为2379,目前不支持修改。
 # kube-api负载均衡器的端口。
