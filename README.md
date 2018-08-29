@@ -25,11 +25,11 @@
 ### kube-api负载均衡器（必须）
 - kube-apiserver负载均衡器。转发到3个master节点的6443端口。如：10.1.11.11:6443 ---> mastersip:6443
 
-### 控制节点ssh设置（在控制节点执行, 非必须）
+<!-- ### 控制节点ssh设置（在控制节点执行, 非必须）
 - 如果是第一次ssh连接远程机器,默认需要手动输入yes确认公钥。这里关闭`StrictHostKeyChecking`检查以跳开这一步，可以在任务执行完成后再打开。  
-- 如果控制节点没有其他节点的ssh权限，但你的主机拥有所有节点的ssh权限。打开`ForwardAgent`开启代理转发即可拥有所有节点ssh权限。  
+- 如果控制节点没有其他节点的ssh权限，但你的主机拥有所有节点的ssh权限。打开`ForwardAgent`开启代理转发即可拥有所有节点ssh权限。   -->
 
-完整配置如下`vim /etc/ssh/ssh_config`：  
+<!-- 完整配置如下`vim /etc/ssh/ssh_config`：  
 ```
 Host *
     StrictHostKeyChecking no
@@ -41,7 +41,7 @@ Host *
     SendEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
     SendEnv LC_IDENTIFICATION LC_ALL LANGUAGE
     SendEnv XMODIFIERS
-```
+``` -->
 
 ## 安装etcd集群及kubernetes集群（必须）
 1. 修改./build-kubernetes-cluster/hosts文件。  

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-dir=$(cd `dirname $0` && pwd)
+dir=$(cd "`dirname $0`" && pwd)
 files="${dir}/../files"
-cd $dir
+cd $dir || exit 1
 chmod +x cfssl cfssljson
 
 # generate etcd certs

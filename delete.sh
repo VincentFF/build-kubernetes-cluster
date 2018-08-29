@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ansible -i hosts -a "kubeadm reset -f"
-ansible -i masters -a "systemctl stop etcd"
-ansible -i masters -a "rm -f /etc/ssl/etcd/*"
-ansible -i masters -a "rm -rf /var/lib/etcd/default.etcd/*"
+ansible -i hosts all -a "kubeadm reset -f"
+ansible -i hosts masters -a "systemctl stop etcd"
+ansible -i hosts masters -a "rm -rf /etc/ssl/etcd/*"
+ansible -i hosts masters -a "rm -rf /var/lib/etcd/default.etcd/*"

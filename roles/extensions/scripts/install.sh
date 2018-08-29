@@ -1,5 +1,6 @@
-cwd=$(cd `dirname $0`; pwd)
-if [[ ! -d  ~/.kube ]]; then
+#!/usr/bin/env bash
+cwd=$(cd "`dirname $0`" || exit 1; pwd)
+if [ ! -d  ~/.kube ]; then
     #statements
     mkdir  ~/.kube
 fi
