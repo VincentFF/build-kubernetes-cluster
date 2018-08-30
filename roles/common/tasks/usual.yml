@@ -11,7 +11,7 @@
   hostname: name={{ host_name }}
 
 - name: Test network
-  shell: ping -w 1 www.bing.com
+  shell: ping -w 1 www.icanhazip.com
   register: host_network
   ignore_errors: True
 
