@@ -1,27 +1,14 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: cheese
+  name: docker-hub
+  namespace: kube-system
 spec:
   rules:
-  - host: stilton.minikube
+  - host: tomato-online-msaskter-lb-bb6cb7cba3da0dbf.elb.ap-northeast-1.amazonaws.com
     http:
       paths:
       - path: /
         backend:
-          serviceName: stilton
-          servicePort: http
-  - host: cheddar.minikube
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: cheddar
-          servicePort: http
-  - host: wensleydale.minikube
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: wensleydale
-          servicePort: http
+          serviceName: docker-local-hub
+          servicePort: 443

@@ -1,0 +1,20 @@
+{
+    "CN": "kubernetes",
+    "hosts": [
+        "127.0.0.1",
+        "10.1.1.1",
+        "dockerhub.k8s.com"
+    ],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "SG",
+            "L": "SG",
+            "O": "etcd",
+            "ST": "SG",
+            "OU": "etcd"
+        }]
+}

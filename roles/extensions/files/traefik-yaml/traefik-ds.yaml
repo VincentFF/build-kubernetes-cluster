@@ -32,6 +32,9 @@ spec:
         - name: https
           containerPort: 443
           hostPort: 443
+        - name: docker-hub
+          containerPort: 5000
+          hostPort: 5000
         - name: admin
           containerPort: 8080
           hostPort: 8080
@@ -51,13 +54,18 @@ spec:
           name: config
         - mountPath: "/ssl"
           name: ssl
+        - mountPath: "/dockerhub-certs"
+          name: dockerhub
       volumes:
       - name: config
         configMap:
           name: traefik-conf
       - name: ssl
         secret:
-          secretName: oauth-tls-cert
+          secretName: pcpay-tls-cert
+      - name: dockerhub
+        secret:
+          secretName: dockerhub-certs
 #---
 #kind: Service
 #apiVersion: v1

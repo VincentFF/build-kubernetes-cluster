@@ -1,0 +1,77 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: docker-hub
+  namespace: kube-system
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "aws-efs"
+spec:
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 8Gi
+#  selector:
+#    matchLabels:
+#      release: "stable"
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: docker-hub
+  namespace: kube-system
+  labels:
+    app: registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: registry
+  template:
+    metadata:
+      labels:
+        app: registry
+    spec:
+      containers:
+      - name: registry
+        image: registry:2.6.2
+        ports:
+        - containerPort: 443
+        env:
+        - name: REGISTRY_HTTP_TLS_CERTIFICATE
+          value: "/certs/tls.crt"
+        - name: REGISTRY_HTTP_TLS_KEY
+          value: "/certs/tls.key"
+        - name: REGISTRY_HTTP_ADDR
+          value: "0.0.0.0:443"
+        - name: REGISTRY_HTTP_SECRET
+          value: "tghjm-xcfvgbhj-klsdcfvbnm"
+        volumeMounts:
+        - mountPath: /var/lib/registry
+          name: docker-hub
+        - mountPath: /certs
+          name: certs
+      # nodeSelector:
+      #   bind-registry: "ture"
+      volumes:
+      - name: docker-hub
+        persistentVolumeClaim:
+          claimName: docker-hub
+      - name: certs
+        secret:
+          secretName: dockerhub-certs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: docker-local-hub
+  namespace: kube-system
+  labels:
+    app: registry
+spec:
+  selector:
+    app: registry
+  ports:
+  - port: 443
+    targetPort: 443
