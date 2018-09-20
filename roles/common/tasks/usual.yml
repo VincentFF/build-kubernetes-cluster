@@ -23,6 +23,10 @@
 #   shell: echo "GATEWAY={{ route_ip }}" >> /etc/sysconfig/network-scripts/ifcfg-eth0
 #   when: host_network is failed
 
+- name: install nfs-utls
+  yum: name=nfs-utils state=present
+- name: install rpcbind
+  yum: name=rpcbind state=present
 
 
 # Set the sysctl value

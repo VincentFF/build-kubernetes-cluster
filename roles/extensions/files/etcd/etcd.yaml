@@ -92,12 +92,12 @@ spec:
   - metadata:
       name: etcd-data
     spec:
-      storageClassName: etcd-data
- #     selector:
- #       matchLabels:
- #         component: etcd
+      storageClassName: aws-efs
+      # selector:
+      #   matchLabels:
+      #     component: etcd
       accessModes:
-        - "ReadWriteOnce"
+        - "ReadWriteMany"
       resources:
         requests:
           storage: 1Gi
