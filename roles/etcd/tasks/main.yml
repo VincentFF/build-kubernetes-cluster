@@ -27,13 +27,13 @@
 
 - name: Copy etcd01 config to hosts
   template: src=etcd_master01.conf dest=/etc/etcd/etcd.conf
-  when: host_name == "master01"
+  when: host_name == "etcd01"
 - name: Copy etcd02 config to hosts
   template: src=etcd_master02.conf dest=/etc/etcd/etcd.conf
-  when: host_name == "master02"
+  when: host_name == "etcd02"
 - name: Copy etcd03 config to hosts
   template: src=etcd_master03.conf dest=/etc/etcd/etcd.conf
-  when: host_name == "master03"
+  when: host_name == "etcd03"
 
 - name: Copy etcd service config to hosts
   copy: src=etcd.service dest=/usr/lib/systemd/system/etcd.service
@@ -46,7 +46,7 @@
   systemd: name=etcd state=started enabled=yes
   async: 300
   poll: 0
-  when: host_name == "master01"
+  when: host_name == "etcd01"
 
 - name: wait 3s for etcd01 start
   wait_for: timeout=1
@@ -55,10 +55,10 @@
   systemd: name=etcd state=started enabled=yes
   async: 300
   poll: 0
-  when: host_name == "master02"
+  when: host_name == "etcd02"
 
 - name: start etcd3
   systemd: name=etcd state=started enabled=yes
   async: 300
   poll: 0
-  when: host_name == "master03"
+  when: host_name == "etcd03"

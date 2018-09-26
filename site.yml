@@ -18,6 +18,11 @@
   remote_user: root
   roles:
     - common
+- hosts: etcds
+  remote_user: root
+  roles:
+    - etcd
+
 - hosts: masters
   remote_user: root
   vars:
