@@ -7,9 +7,9 @@
   selinux: state=disabled
   ignore_errors: true
 
-- name: Change the hostname
-  hostname: name="{{ host_name }}"
-  when: host_name
+# - name: Change the hostname
+#   hostname: name="{{ host_name }}"
+#   when: host_name
 
 - name: Test network
   shell: ping -w 1 www.icanhazip.com

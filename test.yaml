@@ -1,13 +1,12 @@
-- hosts: test
+- hosts: etcds
   remote_user: doors
   gather_facts: no
   connection: local
   vars:
   tasks:
-    - name: test 1
-      debug:
-        msg: "{{ host_name }}"
-      when: host_name
+    - debug:
+        msg: "{{ groups['etcds'][1] }}"
+      # when: host_name
       # when: (docker_info is failed) or (docker_version not in docker_info['stdout'])
       # with_items:
       #   - "{{ groups['master01'] }}"

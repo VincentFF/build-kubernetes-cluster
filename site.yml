@@ -20,6 +20,10 @@
     - common
 - hosts: etcds
   remote_user: root
+  vars:
+    etcd01_ip: "{{ groups['etcds'][0] }}"
+    etcd02_ip: "{{ groups['etcds'][1] }}"
+    etcd03_ip: "{{ groups['etcds'][2] }}"
   roles:
     - etcd
 
@@ -30,7 +34,6 @@
     master02_ip: "{{ groups['master02'][0] }}"
     master03_ip: "{{ groups['master03'][0] }}"
   roles:
-    - etcd
     - masters
 - hosts: nodes
   remote_user: root

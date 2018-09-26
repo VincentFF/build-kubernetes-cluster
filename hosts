@@ -1,17 +1,18 @@
+
 [master01]
-10.0.1.72 major=true host_name=""
+10.0.1.143 major=true host_name=""
 [master02]
-10.0.1.73 major=false host_name=""
+10.0.1.165 major=false host_name=""
 [master03]
-10.0.1.169 major=false host_name=""
+10.0.1.138 major=false host_name=""
 
 [etcds]
-1.1.1.1 host_name=etcd01
-1.1.1.2 host_name=etcd02
-1.1.1.3 host_name=etcd03
+10.0.1.143 host_name=etcd01
+10.0.1.165 host_name=etcd02
+10.0.1.138 host_name=etcd03
 
 [nodes]
-10.0.1.79 host_name=""
+10.0.1.242 host_name=""
 
 [masters:children]
 master01
