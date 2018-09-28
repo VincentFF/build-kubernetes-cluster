@@ -2,12 +2,12 @@
     "CN": "etcd",
     "hosts": [
         "127.0.0.1",
-        "{{ hostvars[master01_ip]['host_name'] }}",
-        "{{ hostvars[master02_ip]['host_name'] }}",
-        "{{ hostvars[master03_ip]['host_name'] }}",
-        "{{ master01_ip }}",
-        "{{ master02_ip }}",
-        "{{ master03_ip }}"
+        "{{ hostvars[etcd01_ip]['host_name'] }}",
+        "{{ hostvars[etcd02_ip]['host_name'] }}",
+        "{{ hostvars[etcd03_ip]['host_name'] }}",
+        "{{ etcd01_ip }}",
+        "{{ etcd02_ip }}",
+        "{{ etcd03_ip }}"
     ],
     "key": {
         "algo": "rsa",

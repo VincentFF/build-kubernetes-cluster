@@ -5,7 +5,7 @@
   vars:
   tasks:
     - debug:
-        msg: "{{ groups['etcds'][1] }}"
+        msg: "{{ ansible_all_ipv4_addresses }}"
       # when: host_name
       # when: (docker_info is failed) or (docker_version not in docker_info['stdout'])
       # with_items:

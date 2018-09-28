@@ -1,18 +1,29 @@
 
 [master01]
-10.0.1.143 major=true host_name=""
+10.6.30.104 major=true host_name="ip-10-6-30-104.ap-southeast-1.compute.internal"
 [master02]
-10.0.1.165 major=false host_name=""
+10.6.30.105 major=false host_name="ip-10-6-30-105.ap-southeast-1.compute.internal"
 [master03]
-10.0.1.138 major=false host_name=""
+10.6.30.106 major=false host_name="ip-10-6-30-106.ap-southeast-1.compute.internal"
 
 [etcds]
-10.0.1.143 host_name=etcd01
-10.0.1.165 host_name=etcd02
-10.0.1.138 host_name=etcd03
+10.6.30.101 host_name="ip-10-6-30-101.ap-southeast-1.compute.internal"
+10.6.30.102 host_name="ip-10-6-30-102.ap-southeast-1.compute.internal"
+10.6.30.103 host_name="ip-10-6-30-103.ap-southeast-1.compute.internal"
 
 [nodes]
-10.0.1.242 host_name=""
+10.6.30.107
+10.6.30.108
+10.6.30.109
+10.6.30.110
+10.6.30.111
+10.6.30.112
+10.6.30.113
+10.6.30.114
+10.6.30.115
+10.6.30.116
+10.6.30.117
+10.6.30.118
 
 [masters:children]
 master01

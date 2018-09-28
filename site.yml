@@ -7,6 +7,9 @@
     master01_ip: "{{ groups['master01'][0] }}"
     master02_ip: "{{ groups['master02'][0] }}"
     master03_ip: "{{ groups['master03'][0] }}"
+    etcd01_ip: "{{ groups['etcds'][0] }}"
+    etcd02_ip: "{{ groups['etcds'][1] }}"
+    etcd03_ip: "{{ groups['etcds'][2] }}"
   pre_tasks:
     - name: Copy kubernetes yum.repo for contral panle
       copy: src=./roles/common/files/kubernetes.repo dest=/etc/yum.repos.d/kubernetes.repo
@@ -18,6 +21,7 @@
   remote_user: root
   roles:
     - common
+
 - hosts: etcds
   remote_user: root
   vars:
@@ -33,6 +37,9 @@
     master01_ip: "{{ groups['master01'][0] }}"
     master02_ip: "{{ groups['master02'][0] }}"
     master03_ip: "{{ groups['master03'][0] }}"
+    etcd01_ip: "{{ groups['etcds'][0] }}"
+    etcd02_ip: "{{ groups['etcds'][1] }}"
+    etcd03_ip: "{{ groups['etcds'][2] }}"
   roles:
     - masters
 - hosts: nodes

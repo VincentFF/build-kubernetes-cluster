@@ -1,9 +1,9 @@
 ---
 # 内网机器的路由地址。对于没有网络的内网机器，由于安装时需要联网，你可能会需要添加一个路由。
-route_ip: 10.0.1.9
+route_ip: 10.6.9.12
 
 # kubeapi负载均衡器的ip。
-load_blance_ip: "10.0.1.143"
+load_blance_ip: "pt-online-master-api-lb-ac3438dd3abb7866.elb.ap-southeast-1.amazonaws.com"
 
 # kube-api负载均衡器的端口。
 load_blance_port: 6443

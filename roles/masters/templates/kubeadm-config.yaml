@@ -11,9 +11,9 @@ api:
 etcd:
   external:
     endpoints:
-    - "https://{{ master01_ip }}:2379"
-    - "https://{{ master02_ip }}:2379"
-    - "https://{{ master03_ip }}:2379"
+    - "https://{{ etcd01_ip }}:2379"
+    - "https://{{ etcd02_ip }}:2379"
+    - "https://{{ etcd03_ip }}:2379"
     caFile: /etc/kubernetes/pki/etcd/ca.crt
     certFile: /etc/kubernetes/pki/apiserver-etcd-client.crt
     keyFile: /etc/kubernetes/pki/apiserver-etcd-client.key
