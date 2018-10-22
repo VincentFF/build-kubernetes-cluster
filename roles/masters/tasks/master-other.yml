@@ -35,7 +35,7 @@
   template: src=kubeadm-config.yaml dest=/root/kubeadm-config.yaml owner=root group=root mode=0644
 
 - name: Install kubernets master other with kubeadm
-  shell: kubeadm init --config /root/kubeadm-config.yaml
+  command: kubeadm init --config /root/kubeadm-config.yaml --ignore-preflight-errors all
   register: kubeadm_response
 
 - name: terminate tasks if kubeadm excute failed
