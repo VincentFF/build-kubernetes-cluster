@@ -49,19 +49,25 @@ Host *
     # 下面的host_name不是你目前节点的hostname，而是你规划的hostname，程序会根据你填入的名称对节点进行修改。
     # 只需填入ip和host_name,其他保持默认。
 
-    # 这里只需要讲三台master节点的ip填入即可，host_name建议保持默认。
+    # 这里只需三台master节点的ip填入即可。
     [master01]
-    10.0.x.x host_name=master01
+    10.0.x.x major=true
     [master02]
-    10.0.x.x host_name=master02
+    10.0.x.x major=false
     [master03]
-    10.0.x.x host_name=master03
+    10.0.x.x major=false
 
-    # 这里需要填入node节点ip和host_name。
+    # etcd ips. Can be master ips or not.
+    [etcds]
+    1.1.1.1
+    1.1.1.1
+    1.1.1.1
+
+    # 这里需要填入node节点ip
     [nodes]
-    10.0.x.x host_name=node01
-    10.0.x.x host_name=node0x
-    10.0.x.x host_name=node0x
+    10.0.x.x
+    10.0.x.x
+    10.0.x.x
     ```
 2. 修改参数  
     vim ./build-kubernetes-cluster/group_vars/all  
@@ -70,7 +76,7 @@ Host *
     # 这个路由会自动设置到不能联网的节点上去，对于能够联网的节点，则会跳过这一步。
     route_ip: 10.0.1.9
 
-    # 建议保持默认
+    # 建议保持默认. support kube 1.11.x
     kube_version: 1.11.2
     docker_version: 18.03.1.ce
     ```

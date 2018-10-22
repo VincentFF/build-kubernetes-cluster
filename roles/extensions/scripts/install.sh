@@ -14,7 +14,7 @@ kubectl apply -f dashboard/.
 kubectl apply -f heapster/heapster-rbac.yaml
 kubectl apply -f heapster/heapster.yaml
 kubectl apply -f heapster/influxdb.yaml
-kubectl apply -f logrotate/.
+# kubectl apply -f logrotate/.
 kubectl apply -f sa/.
 
 admin_token=$(kubectl describe sa admin| grep Tokens| awk '{print $NF}')

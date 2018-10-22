@@ -1,13 +1,15 @@
 
 [master01]
-1.1.1.1  major=true host_name="1.1.1.1 "
+1.1.1.1  major=true
 [master02]
-1.1.1.1  major=false host_name=1.1.1.1
+1.1.1.1  major=false
 [master03]
-1.1.1.1  major=false host_name=1.1.1.1
+1.1.1.1  major=false
 
 [etcds]
-1.1.1.1  host_name=1.1.1.1
+1.1.1.1
+1.1.1.1
+1.1.1.1
 
 [nodes]
 1.1.1.1
