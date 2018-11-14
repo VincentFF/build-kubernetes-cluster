@@ -36,7 +36,7 @@
 
 
 - name: Install kubernets master01 with kubeadm
-  shell: kubeadm init --config /root/kubeadm-config.yaml | grep 'kubeadm join'
+  command: kubeadm init --config /root/kubeadm-config.yaml --ignore-preflight-errors all
   register: kubeadm_response
 
 - name: terminate tasks if kubeadm excute failed
@@ -45,7 +45,7 @@
   when: kubeadm_response is failed
 
 - name: Restore kubeadm join
-  local_action: shell echo "{{ kubeadm_response.stdout }}" > "{{ playbook_dir }}/roles/nodes/files/join.sh" || exit 0
+  local_action: shell echo "{{ kubeadm_response.stdout }}" | grep 'kubeadm join' > "{{ playbook_dir }}/roles/nodes/files/join.sh" || exit 1
 
 - name: Fetch CA files from master01
   fetch: src="/etc/kubernetes/pki/{{ item }}" dest="{{ playbook_dir }}/roles/masters/files/{{ item }}" flat=yes
