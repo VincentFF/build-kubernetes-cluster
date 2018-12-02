@@ -47,9 +47,9 @@
   roles:
     - nodes
 
-- hosts: 127.0.0.1
-  remote_user: root
-  gather_facts: no
-  connection: local
-  roles:
-    - extensions
+# - hosts: 127.0.0.1
+#   remote_user: root
+#   gather_facts: no
+#   connection: local
+#   roles:
+#     - extensions

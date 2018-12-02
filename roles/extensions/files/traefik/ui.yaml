@@ -17,13 +17,9 @@ kind: Ingress
 metadata:
   name: traefik-web-ui
   namespace: kube-system
-  annotations:
-    kubernetes.io/ingress.class: traefik
-    ingress.kubernetes.io/whitelist-source-range: "118.174.30.242/32"
-    ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   rules:
-  - host: traefik-ui.pcpay.me
+  - host: traefik-ui.minikube
     http:
       paths:
       - path: /

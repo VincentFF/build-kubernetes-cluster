@@ -4,17 +4,16 @@
 **备注:**  
 
 *只支持Centos, 且只在centos7上做过测试。*  
-*在AWS上生成ec2实例时建议选用`kubernetes-1.11.2`镜像，里面安装好了kubernetes和docker组件,可以节省安装时间。*  
 
 *程序关闭了firewalld和selinux。  
 网络插件使用flannel, kube-proxy使用ipvs模式。  
-安装了dashboard, heapster, logrotete插件。  
-生成了两个default/sa用户，一个admin,有管理权限。另一个viewer,有查看权限。基于这两个用户的dashboard登录文件在build-kubernetes-cluster下生成   *
+生成了两个default/sa用户，一个admin,有管理权限。另一个viewer,有查看权限。基于这两个用户的dashboard登录文件在build-kubernetes-cluster下生成  
+在extemsions/files里有一些插件，可以自己去安装dashboard*
 
 ## 版本
 - ansible: 2.5.1 +
-- kubeadm: 1.11.2
-- docker: docker-ce-18.03.1.ce +
+- kubernetes: 1.12.3
+- docker: docker-ce-18.09.0
 
 ## 机器（至少4台）
 - 1台控制节点，即运行安装程序所在的节点。(任意拥有所有节点ssh权限的机器，都可以作为控制节点，建议专门选取一台机器作为控制节点。你也可以使用一台master或node节点作为控制节点，需要保证它有自己的ssh权限。)  
@@ -51,17 +50,17 @@ Host *
 
     # 这里只需三台master节点的ip填入即可。
     [master01]
-    10.0.x.x major=true
+    10.0.x.x major=true host_name=10.0.x.x
     [master02]
-    10.0.x.x major=false
+    10.0.x.x major=false host_name=10.0.x.x
     [master03]
-    10.0.x.x major=false
+    10.0.x.x major=false host_name=10.0.x.x
 
     # etcd ips. Can be master ips or not.
     [etcds]
-    1.1.1.1
-    1.1.1.1
-    1.1.1.1
+    1.1.1.1 host_name=1.1.x.x
+    1.1.1.1 host_name=1.1.x.x
+    1.1.1.1 host_name=1.1.x.x
 
     # 这里需要填入node节点ip
     [nodes]
@@ -74,11 +73,11 @@ Host *
     ```
     # 在内网机器不能联网的情况下，需要设置这个路由ip。
     # 这个路由会自动设置到不能联网的节点上去，对于能够联网的节点，则会跳过这一步。
-    route_ip: 10.0.1.9
+    route_ip: 10.0.1.13
 
-    # 建议保持默认. support kube 1.11.x
-    kube_version: 1.11.2
-    docker_version: 18.03.1.ce
+    # 建议保持默认. support kube 1.12.x
+    kube_version: 1.12.3
+    docker_version: 18.09.0-3.el7.x86_64
     ```
     vim ./build-kubernetes-cluster/group_vars/masters  
     ```

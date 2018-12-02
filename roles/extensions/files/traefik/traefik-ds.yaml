@@ -21,7 +21,6 @@ spec:
     spec:
       serviceAccountName: traefik-ingress-controller
       terminationGracePeriodSeconds: 60
-      hostNetwork: true
       containers:
       - image: traefik
         name: traefik-ingress-lb
@@ -32,12 +31,9 @@ spec:
         - name: https
           containerPort: 443
           hostPort: 443
-        - name: docker-hub
-          containerPort: 5000
-          hostPort: 5000
         - name: admin
           containerPort: 8080
-          hostPort: 8080
+          #hostPort: 8080
         securityContext:
           capabilities:
             drop:
@@ -47,25 +43,19 @@ spec:
         args:
         - --api
         - --kubernetes
-        - --configFile=/config/traefik.toml
         - --logLevel=INFO
         volumeMounts:
         - mountPath: "/config"
           name: config
         - mountPath: "/ssl"
           name: ssl
-        - mountPath: "/dockerhub-certs"
-          name: dockerhub
       volumes:
       - name: config
         configMap:
-          name: traefik-conf
+          name: traefik-config
       - name: ssl
         secret:
-          secretName: pcpay-tls-cert
-      - name: dockerhub
-        secret:
-          secretName: dockerhub-certs
+          secretName: ptssl
 #---
 #kind: Service
 #apiVersion: v1
@@ -79,6 +69,9 @@ spec:
 #    - protocol: TCP
 #      port: 80
 #      name: web
+#    - protocol: TCP
+#      port: 443
+#      name: webssl
 #    - protocol: TCP
 #      port: 8080
 #      name: admin

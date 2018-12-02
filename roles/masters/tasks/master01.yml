@@ -47,6 +47,9 @@
 - name: Restore kubeadm join
   local_action: shell echo "{{ kubeadm_response.stdout }}" | grep 'kubeadm join' > "{{ playbook_dir }}/roles/nodes/files/join.sh" || exit 1
 
+- name: Edit kubeadn join scripts
+  local_action: shell sed -i "s/$/ --ignore-preflight-errors all/g" "{{ playbook_dir }}/roles/nodes/files/join.sh"
+
 - name: Fetch CA files from master01
   fetch: src="/etc/kubernetes/pki/{{ item }}" dest="{{ playbook_dir }}/roles/masters/files/{{ item }}" flat=yes
   with_items:

@@ -1,6 +1,6 @@
 ---
 # 内网机器的路由地址。对于没有网络的内网机器，由于安装时需要联网，你可能会需要添加一个路由。
-route_ip: 10.6.9.12
+route_ip: 10.6.9.13
 
 # kubeapi负载均衡器的ip。
 load_blance_ip: "pt-online-master-api-lb-ac3438dd3abb7866.elb.ap-southeast-1.amazonaws.com"
@@ -10,5 +10,5 @@ load_blance_port: 6443
 
 # 版本号。不建议修改。
 etcd_version: 3.2.18
-kube_version: 1.11.2
-docker_version: 18.03.1.ce
+kube_version: 1.12.3
+docker_version: 18.09.0-3.el7.x86_64

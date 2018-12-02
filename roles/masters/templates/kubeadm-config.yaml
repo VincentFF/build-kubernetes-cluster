@@ -1,13 +1,14 @@
-apiVersion: kubeadm.k8s.io/v1alpha2
-kind: MasterConfiguration
+apiVersion: kubeadm.k8s.io/v1alpha3
+# kind: MasterConfiguration
+kind: ClusterConfiguration
 kubernetesVersion: "v{{ kube_version }}"
 apiServerCertSANs:
 - "{{ load_blance_ip }}"
 - "{{ master01_ip }}"
 - "{{ master02_ip }}"
 - "{{ master03_ip }}"
-api:
-  controlPlaneEndpoint: "{{ load_blance_ip }}:{{ load_blance_port }}"
+# api:
+controlPlaneEndpoint: "{{ load_blance_ip }}:{{ load_blance_port }}"
 etcd:
   external:
     endpoints:
@@ -19,7 +20,11 @@ etcd:
     keyFile: /etc/kubernetes/pki/apiserver-etcd-client.key
 networking:
   # This CIDR is a Calico default. Substitute or remove for your CNI provider.
-  podSubnet: "10.244.0.0/16"
+  serviceSubnet: "10.96.0.0/12"
+  dnsDomain: "cluster.local"
+  podSubnet: "192.168.0.0/16"
 kubeProxy:
   config:
+    featureGates:
+      SupportIPVSProxyMode: true
     mode: "ipvs"
