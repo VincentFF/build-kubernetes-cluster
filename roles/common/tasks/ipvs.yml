@@ -15,7 +15,16 @@
     - ip_vs_nq
     - ip_vs_sed
     - ip_vs_ftp
+
+- name: Add ip_vs nf_conntrack or nf_conntrack_ipv4 on different kernel
+  ignore_errors: true
+  modprobe:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - nf_conntrack
     - nf_conntrack_ipv4
+
 
 - name: install ipvsadm
   yum: name=ipvsadm state=present
