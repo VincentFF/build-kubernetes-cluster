@@ -1,0 +1,107 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: impush
+  namespace: default
+  labels:
+    pt: impush
+    group: pt
+spec:
+  replicas: 2
+
+# update strategy
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+
+  minReadySeconds: 20
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      pt: impush
+
+# template of pod 
+  template:
+    metadata:
+      labels:
+        group: pt
+        pt: impush
+    spec:
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 20
+      restartPolicy: "Always"
+
+# auth of images hub
+      imagePullSecrets:
+      - name: myregistrykey
+
+# use initContainer to edit config file, it will dead after finishing work.
+      initContainers:
+      - name: editconfigmap
+        image: images.potato.im/pt/busybox
+        command: ['sh', '-c', 'cp /editingconfig/message.yml /editedconfig && sed -i "s/LOCAL_HOST_IP_FOR_DOCKER/$(hostname -i)/g" /editedconfig/message.yml && chmod +r /editedconfig/message.yml']
+        volumeMounts:
+        - name: message
+          mountPath: /editingconfig/message.yml
+          subPath: message.yml
+        - name: editconfig
+          mountPath: /editedconfig
+          
+
+      containers:
+      - image: images.potato.im/pt/impush:1.1.1
+        name: impush
+        ports:
+        - name: server
+          containerPort: 13302
+        - name: monitor
+          containerPort: 8000
+
+# requirements and limits resources for the container
+        resources:
+          requests:
+            cpu: 2
+            memory: "1Gi"
+          limits:
+            cpu: 14
+            memory: "14Gi"
+
+# rewrite the container lunch command 
+        command: ["./impush"]
+        args: []
+
+# check if the contarner port survive
+        livenessProbe:
+          tcpSocket:
+            port: 13302
+          initialDelaySeconds: 60
+          periodSeconds: 20
+
+# mount config 
+        volumeMounts:
+        - name: potato
+          mountPath: /data/potato.yaml
+          subPath: potato.yaml
+        - name: infoserver
+          mountPath: /data/infoserver.yml
+          subPath: infoserver.yml
+        - name: editconfig
+          mountPath: /data/message.yml
+          subPath: message.yml
+
+# config volumes
+      volumes:
+        - name: message
+          configMap:
+            name: impush-message
+        - name: potato
+          configMap:
+            name: impush-potato
+        - name: infoserver
+          configMap:
+            name: impush-infoserver
+# this empty volume for storage edited config
+        - name: editconfig
+          emptyDir: {} 

@@ -1,0 +1,19 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: impush 
+  namespace: default
+  labels:
+    group: pt
+spec:
+  selector:
+    pt: impush
+  ports:
+    - name: service
+      protocol: TCP
+      port: 13002
+      targetPort: 13002
+    - name: monitor
+      protocol: TCP
+      port: 8000
+      targetPort: 8000
