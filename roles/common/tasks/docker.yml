@@ -1,6 +1,6 @@
 ---
 - name: Check if docker installed and version right
-  shell: rpm -q docker-ce
+  shell: rpm -q docker
   args:
     warn: false
   register: docker_response
@@ -19,9 +19,15 @@
     warn: false
   when: (docker_response is failed) or (docker_version not in docker_response['stdout'])
 
-- name: install docker-ce
-  yum: name="docker-ce-{{ docker_version }}" state=present
+- name: install docker
+  yum: name="docker-{{ docker_version }}" state=present
   when: (docker_response is failed) or (docker_version not in docker_response['stdout'])
+
+- name: change docker group driver to cgroupfs
+  lineinfile:
+    dest: /usr/lib/systemd/system/docker.service
+    regexp: 'native.cgroupdriver=systemd'
+    line: 'native.cgroupdriver=cgroupfs'
 
 - name: Start docker
   systemd: name=docker state=started enabled=yes

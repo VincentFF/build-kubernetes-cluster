@@ -11,4 +11,4 @@ load_blance_port: 6443
 # 版本号。不建议修改。
 etcd_version: 3.2.18
 kube_version: 1.12.3
-docker_version: 18.09.0-3.el7.x86_64
+docker_version: 1.13.1
