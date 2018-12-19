@@ -1,0 +1,48 @@
+groups:
+  - name: ptonline-rules
+    interval: 15s
+    rules:
+      - record: node_ptonline:node_memory_free:memory_available_percents
+        expr: node_memory_MemAvailable{job="node_ptonline"} / on(instance) node_memory_MemTotal{job="node_ptonline"}
+
+      - record: node_ptonline:node_filesystem_free:node_filesystem_free_percents
+        expr: node_filesystem_free{job="node_ptonline",mountpoint="/"} / on(instance) node_filesystem_size{job="node_ptonline",mountpoint="/"}
+
+
+  - name: ptonline-alerting-node
+    interval: 15s
+    rules:
+      - alert: Instance-down
+        expr: up{job='node_ptonline'} == 0
+        for: 2m
+        labels:
+          level: 1
+        annotations:
+          summary: "Instance {{ $labels.instance }} - shut down"
+          description: "(ptonline) Can't connect {{ $labels.instance }} over two minutes."
+
+      - alert: Cpu-load-high
+        expr: node_load1{job='node_ptonline'} / on(instance) machine_cpu_cores > 0.8
+        for: 2m
+        labels:
+          level: 2
+        annotations:
+          summary: "Instance {{ $labels.instance }} - Cpu load over 80%"
+          description: "(ptonline) Instance {{ $labels.instance }} cpu load over {{ $value * 100 }}% ."
+
+      - alert: memory_available_20%
+        expr: node_ptonline:node_memory_free:memory_available_percents <= 0.2
+        for: 5m
+        labels:
+          level: 2
+        annotations:
+          summary: "Instance {{ $labels.instance }} hight memory usage"
+          description: "{{ $labels.instance }} has only {{ $value * 100 }}% memory Available."
+
+      - alert: DiskSpace15%Free
+        expr: node_ptonline:node_filesystem_free:node_filesystem_free_percents <= 0.15
+        labels:
+          level: 2
+        annotations:
+          summary: "Instance {{ $labels.instance }} disk space less than 15%"
+          description: "{{ $labels.instance }} has only {{ $value * 100 }}%  disk free."
