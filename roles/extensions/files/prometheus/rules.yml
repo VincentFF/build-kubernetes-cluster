@@ -1,5 +1,5 @@
 groups:
-  - name: ptonline-rules
+  - name: ptonlineRules
     interval: 15s
     rules:
       - record: node_ptonline:node_memory_free:memory_available_percents
@@ -8,41 +8,53 @@ groups:
       - record: node_ptonline:node_filesystem_free:node_filesystem_free_percents
         expr: node_filesystem_free{job="node_ptonline",mountpoint="/"} / on(instance) node_filesystem_size{job="node_ptonline",mountpoint="/"}
 
+      - record: node_ptonline:node_cpu:node_cpu_usage_percents
+        expr: 1 - avg(irate(node_cpu{job='node_ptonline',mode='idle'}[1m])) by (instance)
 
-  - name: ptonline-alerting-node
+
+  - name: ptonlineAlertingNode
     interval: 15s
     rules:
-      - alert: Instance-down
+      - alert: InstanceDown
         expr: up{job='node_ptonline'} == 0
-        for: 2m
+        for: 1m
         labels:
-          level: 1
+          severity: Critical
+          group: ptonline_node
         annotations:
           summary: "Instance {{ $labels.instance }} - shut down"
-          description: "(ptonline) Can't connect {{ $labels.instance }} over two minutes."
 
-      - alert: Cpu-load-high
-        expr: node_load1{job='node_ptonline'} / on(instance) machine_cpu_cores > 0.8
-        for: 2m
+      - alert: CpuLoadHigh
+        expr: node_load1{job='node_ptonline'} / on(instance) machine_cpu_cores * 100 > 80
+        for: 1m
         labels:
-          level: 2
+          severity: High
+          group: ptonline_node
         annotations:
-          summary: "Instance {{ $labels.instance }} - Cpu load over 80%"
-          description: "(ptonline) Instance {{ $labels.instance }} cpu load over {{ $value * 100 }}% ."
+          summary: "Cpu load over {{ $value }}"
 
-      - alert: memory_available_20%
-        expr: node_ptonline:node_memory_free:memory_available_percents <= 0.2
-        for: 5m
+      - alert: CpuUsageHigh
+        expr:  node_ptonline:node_cpu:node_cpu_usage_percents * 100 > 80
+        for: 1m
         labels:
-          level: 2
+          severity: High
+          group: ptonline_node
         annotations:
-          summary: "Instance {{ $labels.instance }} hight memory usage"
-          description: "{{ $labels.instance }} has only {{ $value * 100 }}% memory Available."
+          summary: "Cpu Usage Over {{ $value }}%"
+
+      - alert: Memory20%Available2
+        expr: node_ptonline:node_memory_free:memory_available_percents * 100 <= 20
+        for: 1m
+        labels:
+          severity: High
+          group: ptonline_node
+        annotations:
+          summary: "{{ $value }}% memory Available"
 
       - alert: DiskSpace15%Free
-        expr: node_ptonline:node_filesystem_free:node_filesystem_free_percents <= 0.15
+        expr: node_ptonline:node_filesystem_free:node_filesystem_free_percents * 100 <= 15
         labels:
-          level: 2
+          severity: High
+          group: ptonline_node
         annotations:
-          summary: "Instance {{ $labels.instance }} disk space less than 15%"
-          description: "{{ $labels.instance }} has only {{ $value * 100 }}%  disk free."
+          summary: "{{ $value }}%  disk free"

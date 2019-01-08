@@ -17,7 +17,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": 9,
-  "iteration": 1544618156135,
+  "iteration": 1545550170744,
   "links": [
     {
       "asDropdown": true,
@@ -44,7 +44,7 @@
       "datasource": "$datasource",
       "format": "percentunit",
       "gauge": {
-        "maxValue": 100,
+        "maxValue": 1,
         "minValue": 0,
         "show": true,
         "thresholdLabels": false,
@@ -99,7 +99,7 @@
           "refId": "A"
         }
       ],
-      "thresholds": "80,90",
+      "thresholds": "0.8, 0.9",
       "title": "Cluster Pod Usage",
       "type": "singlestat",
       "valueFontSize": "80%",
@@ -124,7 +124,7 @@
       "datasource": "$datasource",
       "format": "percentunit",
       "gauge": {
-        "maxValue": 100,
+        "maxValue": 1,
         "minValue": 0,
         "show": true,
         "thresholdLabels": false,
@@ -179,7 +179,7 @@
           "refId": "A"
         }
       ],
-      "thresholds": "80,90",
+      "thresholds": "0.8,0.9",
       "title": "Cluster CPU Usage",
       "type": "singlestat",
       "valueFontSize": "80%",
@@ -204,7 +204,7 @@
       "datasource": "$datasource",
       "format": "percentunit",
       "gauge": {
-        "maxValue": 100,
+        "maxValue": 1,
         "minValue": 0,
         "show": true,
         "thresholdLabels": false,
@@ -259,7 +259,7 @@
           "refId": "A"
         }
       ],
-      "thresholds": "80,90",
+      "thresholds": "0.8,0.9",
       "title": "Cluster Memory Usage",
       "type": "singlestat",
       "valueFontSize": "80%",
@@ -284,7 +284,7 @@
       "datasource": "$datasource",
       "format": "percentunit",
       "gauge": {
-        "maxValue": 100,
+        "maxValue": 1,
         "minValue": 0,
         "show": true,
         "thresholdLabels": false,
@@ -339,7 +339,7 @@
           "refId": "A"
         }
       ],
-      "thresholds": "80,90",
+      "thresholds": "0.8,0.9",
       "title": "Cluster Disk Usage",
       "type": "singlestat",
       "valueFontSize": "80%",
@@ -2521,7 +2521,6 @@
     "list": [
       {
         "current": {
-          "selected": true,
           "text": "ptonline-k8s",
           "value": "ptonline-k8s"
         },
@@ -2538,7 +2537,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "Prometheus",
           "value": "Prometheus"
         },
@@ -2563,7 +2561,6 @@
       },
       {
         "current": {
-          "selected": true,
           "text": "Prometheus",
           "value": "Prometheus"
         },
@@ -2580,7 +2577,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -2662,5 +2658,5 @@
   "timezone": "browser",
   "title": "K8s Cluster",
   "uid": "ut94FhPik",
-  "version": 21
+  "version": 23
 }

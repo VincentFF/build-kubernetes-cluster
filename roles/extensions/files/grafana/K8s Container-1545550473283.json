@@ -17,7 +17,7 @@
   "gnetId": 482,
   "graphTooltip": 0,
   "id": 8,
-  "iteration": 1544686100353,
+  "iteration": 1545550456566,
   "links": [
     {
       "asDropdown": true,
@@ -174,7 +174,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(irate(container_cpu_usage_seconds_total{pod_name=~\"$pod\",namespace=~\"$namespace\",instance=~\"$node\",image!=\"\"}[2m])) by (pod_name)",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{pod_name=~\"$pod\",namespace=~\"$namespace\",instance=~\"$node\",image!=\"\"}[1m])) by (pod_name)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{ pod_name }}",
@@ -203,8 +203,8 @@
       "yaxes": [
         {
           "decimals": 2,
-          "format": "percentunit",
-          "label": null,
+          "format": "short",
+          "label": "cores",
           "logBase": 1,
           "max": null,
           "min": null,
@@ -212,7 +212,7 @@
         },
         {
           "format": "short",
-          "label": null,
+          "label": "",
           "logBase": 1,
           "max": null,
           "min": null,
@@ -875,12 +875,9 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "tags": [],
-          "text": "ip-10-6-40-33.ap-southeast-1.compute.internal",
-          "value": [
-            "ip-10-6-40-33.ap-southeast-1.compute.internal"
-          ]
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": "$cluster",
         "definition": "",
@@ -904,11 +901,9 @@
       {
         "allValue": null,
         "current": {
-          "tags": [],
-          "text": "kube-system",
-          "value": [
-            "kube-system"
-          ]
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": "$cluster",
         "definition": "",
@@ -932,11 +927,8 @@
       {
         "allValue": null,
         "current": {
-          "tags": [],
           "text": "All",
-          "value": [
-            "$__all"
-          ]
+          "value": "$__all"
         },
         "datasource": "$cluster",
         "definition": "",
@@ -991,5 +983,5 @@
   "timezone": "browser",
   "title": "K8s Container",
   "uid": "xpr4K2Pmk",
-  "version": 15
+  "version": 16
 }

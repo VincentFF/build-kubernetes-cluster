@@ -1,12 +1,15 @@
 defaultEntryPoints = ["http", "https"]
-
+[traefikLog]
+filePath = "/dev/stdout"
+[accessLog]
+filePath = "/dev/stdout"
 [entryPoints]
   [entryPoints.http]
-  address = ":80"
+  address = ":1080"
     [entryPoints.http.redirect]
     entryPoint = "https"
   [entryPoints.https]
-  address = ":443"
+  address = ":1443"
     [entryPoints.https.tls]
       [[entryPoints.https.tls.certificates]]
       certFile = "/ssl/tls.crt"

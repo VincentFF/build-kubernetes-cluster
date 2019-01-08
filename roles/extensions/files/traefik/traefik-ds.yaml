@@ -44,6 +44,7 @@ spec:
         - --api
         - --kubernetes
         - --logLevel=INFO
+        - --configfile=/config/traefik.toml
         volumeMounts:
         - mountPath: "/config"
           name: config
